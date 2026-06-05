@@ -1084,6 +1084,121 @@
         .swal2-container {
             z-index: 3000 !important;
         }
+
+        /* --- CSS TỐI ƯU CHO NÚT SẢN PHẨM --- */
+        .btn-add {
+            width: 100%;
+            padding: 12px 15px;
+            /* Tăng độ dày của nút để nhìn sang trọng hơn */
+            font-size: 0.95rem;
+            font-weight: bold;
+            background-color: #fff;
+            color: #d4af37;
+            border: 1.5px solid #d4af37;
+            /* Viền mỏng màu vàng gold */
+            border-radius: 8px;
+            /* Bo tròn 4 góc tinh tế (Có thể đổi thành 30px nếu muốn bo tròn hẳn như viên thuốc) */
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            /* Bóng đổ siêu nhẹ tạo chiều sâu */
+        }
+
+        /* Hiệu ứng khi người dùng di chuột vào */
+        .btn-add:hover {
+            background-color: #d4af37;
+            color: #fff;
+            transform: translateY(-3px);
+            /* Nút sẽ nảy nhẹ lên trên */
+            box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
+            /* Bóng đổ màu vàng gold tỏa ra */
+        }
+
+        .btn-add:active {
+            transform: translateY(0);
+            /* Nhún xuống khi click */
+        }
+
+        /* --- CSS SỬA LỖI TRÀN KHUNG VOUCHER GIỎ HÀNG --- */
+        .cart-voucher-box {
+            margin-top: 15px;
+            border-top: 1px dashed #ddd;
+            padding-top: 15px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            width: 100%;
+        }
+
+        .cart-voucher-box .voucher-title {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #444;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .cart-voucher-box .select-wrapper {
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 8px;
+        }
+
+        .cart-voucher-box #voucher-select {
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+            padding: 10px 35px 10px 10px;
+            /* Tăng padding-right lên 35px để chữ không đè vào mũi tên */
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            outline: none;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+
+            /* Ẩn mũi tên mặc định của hệ điều hành */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+
+            /* Tự chèn mũi tên mới và căn lề cách bên phải 15px */
+            background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2712%27%20height%3D%2712%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23444444%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpolyline%20points%3D%276%209%2012%2015%2018%209%27%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: calc(100% - 15px) center;
+        }
+
+        .cart-voucher-box .input-row {
+            display: flex;
+            gap: 8px;
+            width: 100%;
+            flex-wrap: wrap;
+            box-sizing: border-box;
+        }
+
+        .cart-voucher-box #voucher-input {
+            flex: 1;
+            min-width: 140px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .cart-voucher-box .btn-apply {
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            border-radius: 6px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -1248,20 +1363,16 @@
                 </p>
             </div>
 
-            <div style="margin-top: 15px; border-top: 1px dashed #ddd; padding-top: 15px; margin-bottom: 15px;">
-                <label style="font-weight: bold; font-size: 0.9rem; color: #444;">🎁 Áp dụng Voucher Khuyến Mãi</label>
-                <div style="display: flex; gap: 10px; margin-top: 8px;">
-                    <select id="voucher-select"
-                        style="flex: 1; padding: 8px; border-radius: 4px; border: 1px solid #ccc;"
-                        onchange="applyVoucher()">
+            <div class="cart-voucher-box">
+                <label class="voucher-title">🎁 Áp dụng Voucher Khuyến Mãi</label>
+                <div class="select-wrapper">
+                    <select id="voucher-select" onchange="applyVoucher()">
                         <option value="">-- Không dùng / Tự động chọn --</option>
                     </select>
                 </div>
-                <div style="display: flex; gap: 10px; margin-top: 8px;">
-                    <input type="text" id="voucher-input" placeholder="Hoặc nhập mã (nếu có)..."
-                        style="flex: 1; padding: 8px; border-radius: 4px; border: 1px solid #ccc; outline: none;">
-                    <button type="button" class="btn" style="padding: 8px 15px; font-size: 0.9rem;"
-                        onclick="applyManualVoucher()">Áp dụng</button>
+                <div class="input-row">
+                    <input type="text" id="voucher-input" placeholder="Hoặc nhập mã (nếu có)...">
+                    <button class="btn btn-apply" onclick="applyManualVoucher()">Áp dụng</button>
                 </div>
                 <p id="voucher-message" style="color: #e74c3c; font-size: 0.85rem; margin-top: 5px; display: none;"></p>
             </div>
@@ -1617,11 +1728,11 @@
 
                 // 3. Logic phân định loại nút chuẩn: Nếu thuộc nhóm 'thietke' hoặc cấu hình hành động 'tuvan'
                 if (typesArray.includes('thietke') || prod.buttonAction === 'tuvan' || prod.type === 'tuvan') {
-                    nutHtml = `<button class="btn-add" onclick="openContactModal()" style="width: 100%; padding: 10px 15px; font-size: 0.95rem; font-weight: bold; background-color: #fff; color: #d4af37; border: 1px solid #d4af37; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#d4af37'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='#d4af37';">Nhận tư vấn</button>`;
+                    nutHtml = `<button class="btn-add" onclick="openContactModal()">Nhận tư vấn</button>`;
                 } else {
                     // 4. Kích hoạt gọi hàm addToCart trực tiếp khi click, truyền kèm phân loại để hỗ trợ lọc Voucher nâng cao
                     // Dùng replace(/'/g, "\\'") để chống lỗi vỡ chuỗi khi tên sản phẩm chứa dấu nháy đơn
-                    nutHtml = `<button class="btn-add add-to-cart" onclick="addToCart('${name.replace(/'/g, "\\'")}', ${price}, '${mainTypeStr}', '${subCatStr}')" style="width: 100%; padding: 10px 15px; font-size: 0.95rem; font-weight: bold; background-color: #fff; color: #d4af37; border: 1px solid #d4af37; transition: all 0.3s;" onmouseover="this.style.backgroundColor='#d4af37'; this.style.color='#fff';" onmouseout="this.style.backgroundColor='#fff'; this.style.color='#d4af37';">Thêm vào giỏ</button>`;
+                    nutHtml = `<button class="btn-add add-to-cart" onclick="addToCart('${name.replace(/'/g, "\\'")}', ${price}, '${mainTypeStr}', '${subCatStr}')">Thêm vào giỏ</button>`;
                 }
 
                 // 5. Đồng bộ cấu trúc layout Card giống thiết kế CSS của hệ thống
