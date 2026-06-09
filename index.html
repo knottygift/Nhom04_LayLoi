@@ -10,34 +10,25 @@
     <style>
         /* --- CSS Reset & Cơ bản --- */
         /* --- TÙY BIẾN THANH CUỘN SANG TRỌNG --- */
-        /* Cấu hình cho Chrome, Safari, Edge và các trình duyệt dùng Chromium */
         html::-webkit-scrollbar {
             width: 8px;
-            /* Độ mảnh của thanh cuộn dọc */
             height: 8px;
-            /* Độ mảnh của thanh cuộn ngang (nếu có) */
         }
 
         html::-webkit-scrollbar-track {
             background: #f9f9f9;
-            /* Màu nền của thanh ray (trùng với màu nền body của bạn) */
         }
 
         html::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #e6c667, #d4af37);
-            /* Hiệu ứng màu vàng Gold sang trọng */
             border-radius: 10px;
-            /* Bo tròn hai đầu thanh cuộn cho mềm mại */
             border: 2px solid #f9f9f9;
-            /* Tạo khoảng trống nhỏ hai bên để thanh cuộn trông thanh thoát hơn */
         }
 
         html::-webkit-scrollbar-thumb:hover {
             background: #b5952f;
-            /* Màu vàng sậm hơn khi người dùng di chuột vào */
         }
 
-        /* Cấu hình riêng cho trình duyệt Firefox */
         html {
             scrollbar-width: thin;
             scrollbar-color: #d4af37 #f9f9f9;
@@ -54,7 +45,6 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             -webkit-tap-highlight-color: transparent;
-            /* Xóa ô vuông xanh khi chạm trên điện thoại */
         }
 
         body {
@@ -68,7 +58,6 @@
             color: inherit;
         }
 
-        /* Loại bỏ viền xanh mặc định của trình duyệt khi click hoặc giữ phím */
         button:focus,
         a:focus,
         input:focus,
@@ -77,7 +66,6 @@
             outline: none !important;
         }
 
-        /* KHẮC PHỤC LỖI NỀN XANH KHI TRÌNH DUYỆT TỰ ĐỘNG ĐIỀN (AUTOFILL) */
         input:-webkit-autofill,
         input:-webkit-autofill:hover,
         input:-webkit-autofill:focus,
@@ -87,7 +75,6 @@
             transition: background-color 5000s ease-in-out 0s;
         }
 
-        /* HIỆU ỨNG LÀM MỜ CHUYÊN NGHIỆP KHI BẤM (ACTIVE STATE) */
         .btn:active,
         #cart-menu-btn:active,
         .close-btn:active,
@@ -106,9 +93,7 @@
             width: 100%;
             top: 0;
             z-index: 1000;
-            /* Nằm dưới Overlay (1400) */
             transition: 0.3s;
-            /* Hiệu ứng chuyển cảnh khi mờ đi */
         }
 
         nav {
@@ -126,10 +111,8 @@
             text-decoration: none;
         }
 
-        /* Thêm đoạn này để chỉnh kích thước ảnh logo */
         .logo img {
             height: 45px;
-            /* Bạn có thể tăng giảm số này để logo to/nhỏ vừa ý */
             width: auto;
             object-fit: contain;
         }
@@ -143,9 +126,7 @@
 
         .nav-links li a {
             display: inline-flex;
-            /* Thêm dòng này để dàn hàng ngang */
             align-items: center;
-            /* Căn giữa các phần tử bên trong */
             font-weight: 500;
             transition: color 0.3s;
             cursor: pointer;
@@ -193,7 +174,6 @@
             color: #333;
         }
 
-        /* Hiệu ứng dài ra khi click vào */
         .search-container input:focus {
             width: 220px;
         }
@@ -213,10 +193,8 @@
             color: #d4af37;
         }
 
-        /* --- TÙY CHỈNH NÚT GIỎ HÀNG CHUNG --- */
-        #cart-menu-btn {
-            position: relative;
-            /* Quan trọng: Làm mốc để chấm đỏ neo vào */
+        /* --- NÚT TÀI KHOẢN --- */
+        #auth-menu-btn {
             background: #f4f4f4;
             padding: 8px 15px;
             border-radius: 20px;
@@ -230,10 +208,134 @@
             text-decoration: none;
         }
 
-        /* --- THIẾT KẾ CHẤM ĐỎ THÔNG BÁO GIỐNG APP --- */
+        #auth-menu-btn:hover {
+            background: #d4af37;
+            color: #fff;
+        }
+
+        /* --- NÚT TÀI KHOẢN VÀ MENU DROPDOWN MƯỢT MÀ --- */
+        .auth-dropdown {
+            position: absolute;
+            top: 55px;
+            /* Đẩy lên 1 chút để tạo hiệu ứng trượt */
+            right: 80px;
+            background: white;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            padding: 8px 0;
+            display: flex;
+            flex-direction: column;
+            min-width: 180px;
+            z-index: 2000;
+            /* Hiệu ứng chuyển động */
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .auth-dropdown.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .auth-dropdown a {
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .auth-dropdown a:last-child {
+            border-bottom: none;
+        }
+
+        .auth-dropdown a:hover {
+            background: #fdfbf5;
+            color: #d4af37;
+            padding-left: 25px;
+            /* Hiệu ứng trượt nhẹ text sang phải khi hover */
+            font-weight: bold;
+        }
+
+        /* CSS cho List Đơn hàng */
+        .history-order-item {
+            border: 1px solid #eee;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            transition: 0.2s;
+            cursor: pointer;
+        }
+
+        .history-order-item:hover {
+            border-color: #d4af37;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .history-status {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .status-chua-xu-ly {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-hoan-thanh {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        @media (max-width: 768px) {
+            #auth-menu-btn {
+                padding: 0;
+                width: 40px !important;
+                height: 40px !important;
+                border-radius: 50%;
+                justify-content: center;
+            }
+
+            .auth-text {
+                display: none;
+            }
+
+            .nav-active-search #auth-menu-btn {
+                max-width: 0 !important;
+                opacity: 0 !important;
+                overflow: hidden !important;
+                padding: 0 !important;
+            }
+        }
+
+        /* --- TÙY CHỈNH NÚT GIỎ HÀNG CHUNG --- */
+        #cart-menu-btn {
+            position: relative;
+            background: #f4f4f4;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #333;
+            text-decoration: none;
+        }
+
         #cart-count {
             background-color: #e74c3c;
-            /* Màu đỏ nổi bật */
             color: white;
             font-size: 0.75rem;
             font-weight: bold;
@@ -243,21 +345,17 @@
             transition: 0.3s;
         }
 
-        /* --- TỐI ƯU GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI --- */
         @media (max-width: 768px) {
 
-            /* 1. Nới lỏng lề 2 bên màn hình cho thoáng, không bị ép sát mép */
             nav,
             .nav-container {
                 padding: 15px 20px !important;
             }
 
-            /* 2. Tăng gấp đôi khoảng cách giữa Kính lúp, Giỏ hàng và Menu để chống bấm nhầm */
             .toolbar-right {
                 gap: 16px !important;
             }
 
-            /* Tăng nhẹ vùng chạm của nút Kính lúp (từ 38px lên 40px) */
             .search-btn {
                 background: #f4f4f4;
                 width: 40px !important;
@@ -270,20 +368,15 @@
                 font-size: 1.1rem;
             }
 
-            /* --- BẢN CẬP NHẬT 2.0: SỬA LỖI GIẬT KHI THU NHỎ THANH TÌM KIẾM --- */
-
-            /* 1. Đặt thuộc tính co giãn mượt mà cho Logo */
             .logo {
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
                 max-width: 200px;
                 min-width: 0;
-                /* Bắt buộc để flexbox cho phép thu nhỏ về 0 */
                 opacity: 1;
                 overflow: hidden;
                 white-space: nowrap;
             }
 
-            /* 2. Đặt khung công cụ bên phải luôn chiếm không gian linh hoạt (flex: 1) để không bị giật khung */
             .toolbar-right {
                 flex: 1;
                 justify-content: flex-end;
@@ -291,7 +384,6 @@
                 transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
             }
 
-            /* 3. Hiệu ứng thu nhỏ mượt mà cho các nút bên phải */
             #cart-menu-btn,
             .menu-toggle-btn,
             .back-home {
@@ -303,8 +395,6 @@
                 white-space: nowrap;
             }
 
-            /* 4. Khung tìm kiếm ban đầu (nút tròn) */
-            /* Khung tìm kiếm ban đầu trên Mobile */
             .search-container {
                 padding: 0;
                 background: transparent;
@@ -332,10 +422,8 @@
                 transition: 0.3s;
                 font-size: 1.1rem;
                 flex-shrink: 0;
-                /* Ngăn nút kính lúp bị bóp méo khi thu nhỏ */
             }
 
-            /* 5. TRẠNG THÁI KHI KÍCH HOẠT TÌM KIẾM: Thu nhỏ mọi thứ về 0 mượt mà */
             .nav-active-search .logo,
             .nav-active-search .back-home,
             .nav-active-search #cart-menu-btn,
@@ -350,10 +438,8 @@
 
             .nav-active-search .toolbar-right {
                 gap: 0 !important;
-                /* Rút gọn mượt mà khoảng cách giữa các nút */
             }
 
-            /* 6. Ô tìm kiếm phình to chiếm trọn không gian */
             .search-container.active {
                 background: #fff;
                 padding: 6px 15px;
@@ -361,7 +447,6 @@
                 border-radius: 20px;
                 box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
                 width: 100% !important;
-                /* Tràn đều vùng flex: 1 */
                 display: flex !important;
             }
 
@@ -371,8 +456,6 @@
                 opacity: 1;
             }
 
-            /* --- 2. TỐI ƯU ICON GIỎ HÀNG HÌNH TRÒN --- */
-            /* Tăng nhẹ vùng chạm của nút Giỏ hàng (từ 38px lên 40px) */
             #cart-menu-btn {
                 padding: 0;
                 width: 40px !important;
@@ -398,53 +481,15 @@
                 box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
             }
 
-            /* Tinh chỉnh nút Menu 3 gạch (chỉ có ở index.html, trang quatang sẽ bỏ qua dòng này) */
             .menu-toggle-btn {
                 font-size: 26px !important;
-                /* To ra một chút cho dễ bấm */
                 padding-left: 4px;
-                /* Đẩy nhẹ xa ra khỏi nút giỏ hàng */
             }
-
         }
 
         #cart-menu-btn:hover {
             background: #d4af37;
             color: #fff;
-        }
-
-        .menu-toggle-btn {
-            display: none;
-            font-size: 24px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        /* --- Phần Hero --- */
-        .hero {
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://cdn.shopify.com/s/files/1/0693/1424/9009/files/Lace_wedding-4_1024x1024.jpg?v=1723332340') center/cover;
-            height: 100vh;
-            /* Giữ nguyên cho trình duyệt cũ */
-            height: 100dvh;
-            /* THÊM DÒNG NÀY: Tự động căn chỉnh theo thanh công cụ */
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            color: white;
-            padding: 0 20px;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            margin-bottom: 30px;
-            max-width: 600px;
         }
 
         .btn {
@@ -461,6 +506,39 @@
 
         .btn:hover {
             background-color: #b5952f;
+        }
+
+        .menu-toggle-btn {
+            display: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* --- Phần Hero --- */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://cdn.shopify.com/s/files/1/0693/1424/9009/files/Lace_wedding-4_1024x1024.jpg?v=1723332340') center/cover;
+            height: 100vh;
+            height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+            margin-top: 60px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 600px;
         }
 
         /* --- Các Section chung --- */
@@ -513,6 +591,12 @@
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .product-img {
@@ -533,12 +617,10 @@
             margin: 10px 0;
         }
 
-        /* --- KHÓA CUỘN TRANG KHI MỞ CỬA SỔ / MENU --- */
         body.no-scroll {
             overflow: hidden !important;
             height: 100vh !important;
             height: 100dvh !important;
-            /* THÊM DÒNG NÀY */
         }
 
         /* --- CẤU HÌNH CỬA SỔ MODAL CHUNG --- */
@@ -553,13 +635,11 @@
             background-color: rgba(0, 0, 0, 0.5);
         }
 
-        /* Kỹ thuật ép modal chuyển sang dạng Flexbox khi được kích hoạt bằng JS */
         .modal[style*="display: block"] {
             display: flex !important;
             justify-content: center;
             align-items: center;
             padding: 20px;
-            /* Tạo khoảng cách an toàn với viền màn hình */
         }
 
         .modal-content {
@@ -572,18 +652,13 @@
             position: relative;
             text-align: left;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-
             max-height: 90vh;
             max-height: 90dvh;
-            /* THÊM DÒNG NÀY: Giúp form liên hệ/giỏ hàng không bị lấp mất nút bấm ở dưới cùng */
             overflow-y: auto;
-
-            /* Ẩn thanh cuộn trên Firefox và Microsoft Edge/IE */
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
 
-        /* Ẩn hoàn toàn thanh cuộn trên Chrome, Safari và các trình duyệt dùng mã nguồn Chromium */
         .modal-content::-webkit-scrollbar {
             display: none;
         }
@@ -630,7 +705,6 @@
             min-width: 18px;
             text-align: center;
             border: 2px solid #fff;
-            /* Viền trắng để tách biệt với nền */
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
@@ -669,7 +743,6 @@
 
         .form-group input:focus,
         .form-group textarea:focus {
-            /* THÊM TEXTAREA: Để ô Ghi chú cũng đổi màu viền vàng đồng bộ */
             border-color: #d4af37;
         }
 
@@ -711,7 +784,6 @@
             width: 100%;
             height: 100vh;
             height: 100dvh;
-            /* THÊM DÒNG NÀY */
             background-color: rgba(0, 0, 0, 0.6);
             backdrop-filter: blur(2px);
             z-index: 1400;
@@ -745,7 +817,6 @@
                 width: 260px;
                 height: 100vh;
                 height: 100dvh;
-                /* Chiều cao cố định bằng màn hình */
                 background-color: #fff;
                 box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
                 flex-direction: column;
@@ -755,15 +826,10 @@
                 gap: 0;
                 transition: right 0.3s ease-in-out;
                 z-index: 1500;
-
-                /* --- THÊM THUỘC TÍNH NÀY ĐỂ BẬT TÍNH NĂNG CUỘN --- */
                 overflow-y: auto;
-
-                /* Giúp hiệu ứng cuộn trên iPhone/iPad mượt mà hơn */
                 -webkit-overflow-scrolling: touch;
             }
 
-            /* Ẩn thanh cuộn của menu trên điện thoại */
             .nav-links::-webkit-scrollbar {
                 display: none;
             }
@@ -779,9 +845,7 @@
 
             .nav-links li a {
                 display: flex;
-                /* Thay từ block thành flex để kích hoạt hộp linh hoạt */
                 align-items: center;
-                /* Ép chữ "Quà tặng" và mũi tên SVG phải thẳng hàng tuyệt đối */
                 padding: 15px 0;
                 font-size: 1.1rem;
                 color: #333;
@@ -818,7 +882,6 @@
                 padding: 20px;
             }
 
-            /* --- VÔ HIỆU HÓA HOÀN TOÀN THANH CÔNG CỤ KHI MENU MỞ --- */
             body.menu-open #main-header nav .logo,
             body.menu-open #main-header nav .toolbar-right {
                 filter: brightness(0.6) blur(2px);
@@ -828,14 +891,11 @@
         }
 
         /* --- CSS CHO LOGO TRÊN MENU ĐIỆN THOẠI --- */
-        /* Mặc định ẩn trên máy tính */
         .mobile-menu-header {
             display: none;
         }
 
         @media (max-width: 768px) {
-
-            /* Chỉ hiển thị trên điện thoại */
             .mobile-menu-header {
                 display: flex !important;
                 justify-content: space-between;
@@ -844,24 +904,12 @@
                 padding-bottom: 15px;
                 margin-bottom: 10px;
                 border-bottom: 2px solid #f4f4f4;
-                /* Đường viền mỏng ngăn cách với các mục ở dưới */
             }
 
-            /* Tắt margin thừa của nút đóng để nó thẳng hàng với Logo */
             .mobile-menu-header .close-sidebar-btn {
                 margin-bottom: 0;
                 line-height: 1;
             }
-        }
-
-        /* Hiệu ứng khi di chuột vào ô sản phẩm */
-        .product-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         /* --- CSS CHO MENU DROP-DOWN (QUÀ TẶNG) --- */
@@ -871,23 +919,16 @@
 
         .dropdown-menu {
             display: none;
-            /* ĐỔI TỪ ABSOLUTE THÀNH FIXED: Giúp menu tách khỏi nút, canh theo toàn bộ màn hình */
             position: fixed;
             top: 85px;
-            /* Nằm ngay sát mép dưới của thanh Header (Header cao đúng 85px) */
             left: 50vw;
-            /* Luôn luôn đẩy ra chính giữa tâm màn hình */
             transform: translateX(-50%);
-            /* Kéo lùi lại một nửa chiều rộng để cân bằng tuyệt đối */
             background-color: #fff;
-
             width: max-content;
             max-width: 95vw;
-            /* Dù màn hình nhỏ cỡ nào, tối đa cũng chỉ chiếm 95% màn hình (thừa 2.5% mỗi bên) */
             max-height: 75vh;
             overflow-x: auto;
             overflow-y: auto;
-
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
             border-radius: 12px;
             padding: 25px;
@@ -896,7 +937,6 @@
             text-align: left;
         }
 
-        /* Tùy chỉnh thanh cuộn cho Dropdown */
         .dropdown-menu::-webkit-scrollbar {
             width: 6px;
             height: 6px;
@@ -916,30 +956,25 @@
             background: #b5952f;
         }
 
-        /* Hiệu ứng trượt xuống mượt mà */
         .dropdown-menu.show {
             display: flex;
             animation: fadeInDown 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
         }
 
-        /* CẬP NHẬT LẠI HOẠT ẢNH: Phù hợp với tọa độ Fixed mới */
         @keyframes fadeInDown {
             from {
                 opacity: 0;
                 top: 105px;
-                /* Trượt nhẹ từ dưới lên */
             }
 
             to {
                 opacity: 1;
                 top: 85px;
-                /* Dừng lại khít sát đáy Header */
             }
         }
 
         .dropdown-section {
             flex: 1;
-            /* min-width: 220px; */
         }
 
         @media (min-width: 769px) {
@@ -949,11 +984,9 @@
             }
         }
 
-        /* ĐƯỜNG KẺ DỌC MÀU VÀNG GOLD TRÊN MÁY TÍNH (PC) CHO 3 CỘT */
         .dropdown-section:not(:last-child) {
             padding-right: 25px;
             border-right: 1px solid rgba(212, 175, 55, 0.35);
-            /* Đường kẻ dọc mảnh giữa các cột */
         }
 
         .dropdown-section:not(:first-child) {
@@ -983,7 +1016,6 @@
             border-bottom: none !important;
         }
 
-        /* THIẾT KẾ KHUNG Ô CHỌN CHO TỪNG ITEM */
         .dropdown-section ul li a {
             font-weight: 500 !important;
             font-size: 0.92rem !important;
@@ -996,7 +1028,6 @@
             display: block;
         }
 
-        /* HIỆU ỨNG KHI DI CHUỘT VÀO Ô CHỌN */
         .dropdown-section ul li a:hover {
             background-color: #fffdf5 !important;
             border-color: #d4af37 !important;
@@ -1005,26 +1036,21 @@
             box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
         }
 
-        /* --- CSS MỚI CHO MŨI TÊN SVG (CẬP NHẬT TRỤC THẲNG HÀNG) --- */
         .arrow {
             display: inline-block;
             width: 14px;
             height: 14px;
             margin-left: 2px;
             flex-shrink: 0;
-            /* Đảm bảo mũi tên giữ nguyên tỷ lệ, không bao giờ bị méo */
             transition: transform 0.3s ease;
             position: relative;
             top: 1px;
-            /* Dịch nhẹ xuống 2px để trục nằm ngang cân bằng tuyệt đối với chữ */
         }
 
-        /* Khi menu hoạt động, lộn ngược lại 180 độ */
         .dropdown.active .arrow {
             transform: rotate(180deg);
         }
 
-        /* --- TÙY CHỈNH RESPONSIVE CHO ĐIỆN THOẠI (CHUYỂN THÀNH KẺ NGANG) --- */
         @media (max-width: 768px) {
             .dropdown-menu {
                 position: static;
@@ -1036,21 +1062,17 @@
                 background-color: transparent;
                 border-top: none;
                 max-height: none !important;
-                /* Gỡ bỏ giới hạn chiều cao */
                 overflow: visible !important;
-                /* Cho phép nội dung tràn tự nhiên, không sinh thanh cuộn */
             }
 
             .dropdown-section {
                 padding-left: 0 !important;
             }
 
-            /* Tự động hủy đường kẻ dọc và chuyển thành kẻ ngang trên Mobile cho tất cả các phần ngoại trừ phần cuối */
             .dropdown-section:not(:last-child) {
                 padding-right: 0;
                 border-right: none;
                 border-bottom: 1px dashed rgba(212, 175, 55, 0.4);
-                /* Thay bằng đường kẻ ngang đứt nét mảnh */
                 padding-bottom: 20px;
                 margin-bottom: 15px;
             }
@@ -1085,38 +1107,39 @@
             z-index: 3000 !important;
         }
 
+        /* --- TOAST NOTIFICATION STYLING (CUSTOM) --- */
+        .custom-swal-toast-container {
+            z-index: 10005 !important;
+        }
+
+        .custom-swal-toast {
+            margin-top: 75px !important;
+        }
+
         /* --- CSS TỐI ƯU CHO NÚT SẢN PHẨM --- */
         .btn-add {
             width: 100%;
             padding: 12px 15px;
-            /* Tăng độ dày của nút để nhìn sang trọng hơn */
             font-size: 0.95rem;
             font-weight: bold;
             background-color: #fff;
             color: #d4af37;
             border: 1.5px solid #d4af37;
-            /* Viền mỏng màu vàng gold */
             border-radius: 8px;
-            /* Bo tròn 4 góc tinh tế (Có thể đổi thành 30px nếu muốn bo tròn hẳn như viên thuốc) */
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            /* Bóng đổ siêu nhẹ tạo chiều sâu */
         }
 
-        /* Hiệu ứng khi người dùng di chuột vào */
         .btn-add:hover {
             background-color: #d4af37;
             color: #fff;
             transform: translateY(-3px);
-            /* Nút sẽ nảy nhẹ lên trên */
             box-shadow: 0 6px 15px rgba(212, 175, 55, 0.3);
-            /* Bóng đổ màu vàng gold tỏa ra */
         }
 
         .btn-add:active {
             transform: translateY(0);
-            /* Nhún xuống khi click */
         }
 
         /* --- CSS SỬA LỖI TRÀN KHUNG VOUCHER GIỎ HÀNG --- */
@@ -1149,7 +1172,6 @@
             max-width: 100%;
             min-width: 0;
             padding: 10px 35px 10px 10px;
-            /* Tăng padding-right lên 35px để chữ không đè vào mũi tên */
             border-radius: 6px;
             border: 1px solid #ccc;
             background-color: #fff;
@@ -1159,13 +1181,9 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             overflow: hidden;
-
-            /* Ẩn mũi tên mặc định của hệ điều hành */
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-
-            /* Tự chèn mũi tên mới và căn lề cách bên phải 15px */
             background-image: url('data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20width%3D%2712%27%20height%3D%2712%27%20viewBox%3D%270%200%2024%2024%27%20fill%3D%27none%27%20stroke%3D%27%23444444%27%20stroke-width%3D%272%27%20stroke-linecap%3D%27round%27%20stroke-linejoin%3D%27round%27%3E%3Cpolyline%20points%3D%276%209%2012%2015%2018%209%27%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E');
             background-repeat: no-repeat;
             background-position: calc(100% - 15px) center;
@@ -1216,7 +1234,7 @@
         <li><a href="#dichvu" onclick="closeMenu()">Dịch vụ</a></li>
 
         <li class="dropdown">
-            <a href="quatang.html" class="dropbtn" onclick="toggleDropdown(event)">
+            <a href="quatang_new.html" class="dropbtn" onclick="toggleDropdown(event)">
                 Quà tặng
                 <svg class="arrow" viewBox="0 0 24 24">
                     <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
@@ -1227,51 +1245,37 @@
                 <div class="dropdown-section">
                     <h4>Cá nhân</h4>
                     <ul>
-                        <li><a href="quatang.html?filter=ongba_chame" onclick="closeMenu()">Ông bà, Cha mẹ</a></li>
-                        <li><a href="quatang.html?filter=vo_chong_nguoiyeu" onclick="closeMenu()">Vợ chồng, Người
+                        <li><a href="quatang_new.html?filter=ongba_chame" onclick="closeMenu()">Ông bà, Cha mẹ</a></li>
+                        <li><a href="quatang_new.html?filter=vo_chong_nguoiyeu" onclick="closeMenu()">Vợ chồng, Người
                                 yêu</a></li>
-                        <li><a href="quatang.html?filter=sinhnhat" onclick="closeMenu()">Sinh nhật</a></li>
-                        <li><a href="quatang.html?filter=banbe_dongnghiep" onclick="closeMenu()">Bạn bè, Đồng nghiệp</a>
+                        <li><a href="quatang_new.html?filter=sinhnhat" onclick="closeMenu()">Sinh nhật</a></li>
+                        <li><a href="quatang_new.html?filter=banbe_dongnghiep" onclick="closeMenu()">Bạn bè, Đồng
+                                nghiệp</a>
                         </li>
-                        <li><a href="quatang.html?filter=cuoi_tangia" onclick="closeMenu()">Quà Cưới, Tân gia</a></li>
-                        <li><a href="quatang.html?filter=khac_canhan" onclick="closeMenu()">Khác</a></li>
-                    </ul>
-                </div>
-                <div class="dropdown-section">
-                    <h4>Doanh nghiệp</h4>
-                    <ul>
-                        <li><a href="quatang.html?filter=doitac_vip" onclick="closeMenu()">Đối tác/Khách hàng VIP</a>
+                        <li><a href="quatang_new.html?filter=cuoi_tangia" onclick="closeMenu()">Quà Cưới, Tân gia</a>
                         </li>
-                        <li><a href="quatang.html?filter=nhanvien" onclick="closeMenu()">Tri ân Nhân viên</a></li>
-                        <li><a href="quatang.html?filter=sukien_hoithao" onclick="closeMenu()">Sự kiện/Hội thảo</a>
-                        </li>
-                        <li><a href="quatang.html?filter=thanhlap_congty" onclick="closeMenu()">Kỷ niệm thành lập</a>
-                        </li>
-                        <li><a href="quatang.html?filter=le" onclick="closeMenu()">Quà ngày lễ</a></li>
-                        <li><a href="quatang.html?filter=khac_doanhnghiep" onclick="closeMenu()">Khác</a></li>
+                        <li><a href="quatang_new.html?filter=khac_canhan" onclick="closeMenu()">Khác</a></li>
                     </ul>
                 </div>
                 <div class="dropdown-section">
                     <h4>Quà theo mùa</h4>
                     <ul>
-                        <li><a href="quatang.html?filter=tet" onclick="closeMenu()">Tết</a></li>
-                        <li><a href="quatang.html?filter=valentine" onclick="closeMenu()">Valentine</a></li>
-                        <li><a href="quatang.html?filter=trungthu" onclick="closeMenu()">Trung thu</a></li>
-                        <li><a href="quatang.html?filter=phu_nu" onclick="closeMenu()">Nâng niu phái đẹp</a></li>
-                        <li><a href="quatang.html?filter=m19_11" onclick="closeMenu()">Ngày của nam giới</a></li>
-                        <li><a href="quatang.html?filter=m20_11" onclick="closeMenu()">Tri ân thầy cô</a></li>
-                        <li><a href="quatang.html?filter=giangsinh" onclick="closeMenu()">Giáng Sinh</a></li>
-                        <li><a href="quatang.html?filter=khac_theomua" onclick="closeMenu()">Khác</a></li>
+                        <li><a href="quatang_new.html?filter=tet" onclick="closeMenu()">Tết</a></li>
+                        <li><a href="quatang_new.html?filter=valentine" onclick="closeMenu()">Valentine</a></li>
+                        <li><a href="quatang_new.html?filter=trungthu" onclick="closeMenu()">Trung thu</a></li>
+                        <li><a href="quatang_new.html?filter=phu_nu" onclick="closeMenu()">Nâng niu phái đẹp</a></li>
+                        <li><a href="quatang_new.html?filter=m19_11" onclick="closeMenu()">Ngày của nam giới</a></li>
+                        <li><a href="quatang_new.html?filter=m20_11" onclick="closeMenu()">Tri ân thầy cô</a></li>
+                        <li><a href="quatang_new.html?filter=giangsinh" onclick="closeMenu()">Giáng Sinh</a></li>
                     </ul>
                 </div>
                 <div class="dropdown-section">
                     <h4>Đặt thiết kế</h4>
                     <ul>
-                        <li><a href="quatang.html?filter=canhanhoa" onclick="closeMenu()">Đặt quà cá nhân hóa</a>
+                        <li><a href="quatang_new.html?filter=canhanhoa" onclick="closeMenu()">Đặt quà cá nhân hóa</a>
                         </li>
-                        <li><a href="quatang.html?filter=soluonglon" onclick="closeMenu()">Đặt số lượng lớn</a>
-                        </li>
-                        <li><a href="quatang.html?filter=khac_thietke" onclick="closeMenu()">Khác</a></li>
+                        <li><a href="quatang_new.html?filter=soluonglon" onclick="closeMenu()">Đặt số lượng lớn</a></li>
+                        <li><a href="quatang_new.html?filter=khac_thietke" onclick="closeMenu()">Khác</a></li>
                     </ul>
                 </div>
             </div>
@@ -1290,6 +1294,13 @@
                 </div>
                 <a id="cart-menu-btn">🛒 <span class="cart-text">Giỏ hàng</span><span id="cart-count"
                         style="display: none;">0</span></a>
+                <a id="auth-menu-btn" onclick="toggleAuth()">👤 <span class="auth-text" id="auth-label">Đăng
+                        nhập</span></a>
+                <div id="auth-dropdown" class="auth-dropdown">
+                    <a onclick="openOrderHistoryModal()">📦 Đơn hàng đã đặt</a>
+                    <a onclick="openChangePasswordModal()">🔑 Đổi mật khẩu</a>
+                    <a onclick="logout()">🚪 Đăng xuất</a>
+                </div>
                 <span class="menu-toggle-btn" onclick="toggleMenu()">☰</span>
             </div>
         </nav>
@@ -1330,7 +1341,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="quatang.html" class="btn"
+            <a href="quatang_new.html" class="btn"
                 style="padding: 12px 40px; font-size: 1.1rem; border-radius: 25px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);">
                 Xem toàn bộ quà tặng &rarr;
             </a>
@@ -1367,7 +1378,7 @@
                 <label class="voucher-title">🎁 Áp dụng Voucher Khuyến Mãi</label>
                 <div class="select-wrapper">
                     <select id="voucher-select" onchange="applyVoucher()">
-                        <option value="">-- Không dùng / Tự động chọn --</option>
+                        <option value="">-- Dùng voucher tối ưu nhất --</option>
                     </select>
                 </div>
                 <div class="input-row">
@@ -1465,24 +1476,158 @@
         </div>
     </div>
 
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeAuthModal()">&times;</span>
+
+            <div id="login-form-box">
+                <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Đăng Nhập Thành Viên</h2>
+                <form onsubmit="handleLoginSubmit(event)">
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="tel" id="login-phone" placeholder="Nhập số điện thoại..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="login-password" placeholder="Nhập mật khẩu..." required>
+                    </div>
+                    <button type="submit" class="btn checkout-btn">Đăng Nhập</button>
+                    <p style="text-align:center; margin-top:15px; font-size:0.9rem;">
+                        Chưa có tài khoản? <a href="javascript:void(0)" onclick="switchAuth('register')"
+                            style="color:#d4af37; font-weight:bold;">Đăng ký ngay</a>
+                    </p>
+                </form>
+            </div>
+
+            <div id="register-form-box" style="display:none;">
+                <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Tạo Tài Khoản</h2>
+                <form onsubmit="handleRegisterSubmit(event)">
+                    <div class="form-group">
+                        <label>Họ và tên</label>
+                        <input type="text" id="reg-name" placeholder="Ví dụ: Nguyễn Văn A" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Số điện thoại</label>
+                        <input type="tel" id="reg-phone" placeholder="Dùng để đăng nhập..." required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="reg-email" placeholder="name@example.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Mật khẩu</label>
+                        <input type="password" id="reg-password" placeholder="Tạo mật khẩu..." required>
+                    </div>
+                    <button type="submit" class="btn checkout-btn">Đăng Ký</button>
+                    <p style="text-align:center; margin-top:15px; font-size:0.9rem;">
+                        Đã có tài khoản? <a href="javascript:void(0)" onclick="switchAuth('login')"
+                            style="color:#d4af37; font-weight:bold;">Đăng nhập</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeChangePasswordModal()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Đổi Mật Khẩu</h2>
+            <form onsubmit="handleChangePasswordSubmit(event)">
+                <div class="form-group">
+                    <label>Mật khẩu hiện tại</label>
+                    <input type="password" id="old-password" required>
+                </div>
+                <div class="form-group">
+                    <label>Mật khẩu mới</label>
+                    <input type="password" id="new-password" required>
+                </div>
+                <div class="form-group">
+                    <label>Xác nhận mật khẩu mới</label>
+                    <input type="password" id="confirm-new-password" required>
+                </div>
+                <button type="submit" class="btn checkout-btn">Cập nhật mật khẩu</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="order-history-modal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-btn" onclick="closeOrderHistoryModal()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: #d4af37;"><i class="fas fa-history"></i> Đơn hàng đã đặt</h2>
+            <div id="order-history-list" style="max-height: 60vh; overflow-y: auto; padding-right: 10px;">
+            </div>
+        </div>
+    </div>
+
+    <div id="invoice-detail-modal" class="modal">
+        <div class="modal-content" style="max-width: 500px;">
+            <span class="close-btn" onclick="closeInvoiceDetailModal()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Chi Tiết Hóa Đơn</h2>
+            <div id="invoice-detail-content"
+                style="background: #f9f9f9; padding: 20px; border-radius: 8px; font-size:0.95rem; line-height: 1.6;">
+            </div>
+        </div>
+    </div>
+
     <footer id="lienhe_footer">
         <h2>Knotty - Gắn kết những điều ngọt ngào</h2>
-        <p style="margin: 15px 00;">Hotline: 0123 456 789</p>
+        <p style="margin: 15px 0;">Hotline: 0123 456 789</p>
         <p style="margin: 15px 0;">Email: Knotty@giftdesign.vn</p>
         <p>&copy; 2026 . Knotty . Thiết kế bằng cả trái tim 💛.</p>
     </footer>
 
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxB8dkm3JuHgm2j87AL95uU7sgwNFoOyyXr5HgX6AWS38Q7fddYCMAWZuvte-YrYo8N/exec";
-        let isManualVoucher = false; // Mặc định là false (hệ thống tự chọn). Sẽ thành true nếu khách tự nhập mã.
+        // ===================================
+        // SECURITY CONFIGURATION
+        // ===================================
+
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgmj4HQP-uciGgg6eKwjumbuCAP5HlznGtcLJ4v0-JkI2GQvW2eHdQga9MBc13H1rtAA/exec";
+
+        // ✅ FIX: Generate secure session tokens
+        let sessionToken = null;
+        let sessionTimestamp = null;
+        let isManualVoucher = false;
+
+        // ===================================
+        // SECURITY UTILITIES
+        // ===================================
+
+        /**
+         * Escape HTML to prevent XSS
+         */
+        function escapeHtml(text) {
+            if (!text) return '';
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return String(text).replace(/[&<>"']/g, m => map[m]);
+        }
+
+        /**
+         * Generate unique client ID
+         */
+        function getClientId() {
+            let clientId = sessionStorage.getItem('knotty_client_id');
+            if (!clientId) {
+                clientId = 'client_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now();
+                sessionStorage.setItem('knotty_client_id', clientId);
+            }
+            return clientId;
+        }
+
+        // ===================================
+        // MENU MANAGEMENT
+        // ===================================
+
         window.addEventListener('load', function () {
-            // 1. Cho phép trình duyệt nhớ lại vị trí cũ khi tải lại trang
             if ('scrollRestoration' in history) {
                 history.scrollRestoration = 'auto';
             }
 
-            // 2. Dùng setTimeout tạo một độ trễ rất nhỏ (200 mili-giây) 
-            // để đợi trình duyệt khôi phục xong vị trí cũ, sau đó mới kích hoạt cuộn mượt lên đầu
             setTimeout(function () {
                 window.scrollTo({
                     top: 0,
@@ -1492,67 +1637,50 @@
             }, 200);
         });
 
-        // --- CHỨC NĂNG TÌM KIẾM CHO TRANG CHỦ ---
+        /**
+         * Execute search with sanitized input
+         */
         function executeSearch() {
             const keyword = document.getElementById('main-search-input').value.trim();
             if (keyword !== "") {
-                // Chuyển hướng sang trang quà tặng và truyền từ khóa lên URL
-                window.location.href = `quatang.html?search=${encodeURIComponent(keyword)}`;
+                window.location.href = `quatang_new.html?search=${encodeURIComponent(keyword)}`;
             }
         }
 
-        // Lắng nghe sự kiện click vào icon kính lúp
-        // --- CHỨC NĂNG TÌM KIẾM MỚI (TỐI ƯU CHO MOBILE TRẢI DÀI 100%) ---
         const searchBtn = document.getElementById('main-search-btn');
         const searchContainer = document.querySelector('.search-container');
         const searchInput = document.getElementById('main-search-input');
 
         searchBtn.addEventListener('click', function (e) {
-            // Nếu đang ở màn hình điện thoại và thanh tìm kiếm CHƯA MỞ
             if (window.innerWidth <= 768 && !searchContainer.classList.contains('active')) {
-                e.preventDefault(); // Chặn việc thực hiện tìm kiếm ngay
-
-                searchContainer.classList.add('active'); // Mở thanh tìm kiếm ra
-
-                // Tìm thanh nav cha để thêm class ẩn các nút khác
+                e.preventDefault();
+                searchContainer.classList.add('active');
                 const navWrapper = searchContainer.closest('nav') || searchContainer.closest('.nav-container');
                 if (navWrapper) navWrapper.classList.add('nav-active-search');
-
-                searchInput.focus(); // Tự động bật bàn phím điện thoại lên
+                searchInput.focus();
             } else {
                 executeSearch();
             }
         });
 
-        // Tiện ích UI: Tự động thu gọn kính lúp, hiện lại Logo & các nút khi click ra ngoài ô tìm kiếm
         document.addEventListener('click', function (e) {
             if (window.innerWidth <= 768 && searchContainer.classList.contains('active')) {
-                // Nếu điểm click không nằm trong khu vực thanh tìm kiếm
                 if (!searchContainer.contains(e.target)) {
-                    searchContainer.classList.remove('active'); // Thu nhỏ thanh tìm kiếm
-
-                    // Hiện lại Logo, giỏ hàng, menu
+                    searchContainer.classList.remove('active');
                     const navWrapper = searchContainer.closest('nav') || searchContainer.closest('.nav-container');
                     if (navWrapper) navWrapper.classList.remove('nav-active-search');
-
-                    searchInput.value = ''; // Xóa chữ đang gõ dở
-
-                    // Nếu ở trang quà tặng, reset lại danh sách sản phẩm đầy đủ khi xóa tìm kiếm
-                    if (typeof renderProducts === "function" && typeof products !== "undefined") {
-                        renderProducts(products);
-                    }
+                    searchInput.value = '';
                 }
             }
         });
 
-        // Lắng nghe sự kiện bấm phím Enter trong ô nhập liệu
         document.getElementById('main-search-input').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 executeSearch();
             }
         });
 
-        // --- 1. ĐIỀU KHIỂN THANH BÊN & OVERLAY ---
+        // --- MENU MANAGEMENT ---
         const navLinks = document.getElementById('navLinks');
         const menuOverlay = document.getElementById('menuOverlay');
         const desktopMenuContainer = document.getElementById('desktopMenuContainer');
@@ -1562,7 +1690,7 @@
                 if (desktopMenuContainer && !desktopMenuContainer.contains(navLinks)) {
                     desktopMenuContainer.appendChild(navLinks);
                     document.body.classList.remove('menu-open');
-                    document.body.classList.remove('no-scroll'); // Đảm bảo mở khóa cuộn
+                    document.body.classList.remove('no-scroll');
                     navLinks.classList.remove('active');
                     if (menuOverlay) menuOverlay.classList.remove('active');
                 }
@@ -1585,7 +1713,7 @@
                     navLinks.classList.add('active');
                     if (menuOverlay) menuOverlay.classList.add('active');
                     document.body.classList.add('menu-open');
-                    document.body.classList.add('no-scroll'); // Khóa cuộn khi mở menu
+                    document.body.classList.add('no-scroll');
                 }
             }
         }
@@ -1595,11 +1723,11 @@
                 navLinks.classList.remove('active');
                 if (menuOverlay) menuOverlay.classList.remove('active');
                 document.body.classList.remove('menu-open');
-                document.body.classList.remove('no-scroll'); // Mở khóa cuộn khi đóng menu
+                document.body.classList.remove('no-scroll');
             }
         }
 
-        // --- 2. LOGIC QUẢN LÝ CÁC CỬA SỔ MODAL (ĐÃ KHÓA CUỘN NỀN) ---
+        // --- MODAL MANAGEMENT ---
         const cartModal = document.getElementById('cart-modal');
         const orderInfoModal = document.getElementById('order-info-modal');
         const contactMainModal = document.getElementById('contact-main-modal');
@@ -1623,33 +1751,42 @@
             if (event.target == contactMainModal) closeContactModal();
         }
 
-        // --- XỬ LÝ DỮ LIỆU YÊU CẦU LIÊN HỆ TỔNG HỢP ---
+        // ===================================
+        // CONTACT FORM HANDLER
+        // ===================================
+
+        /**
+         * Handle main contact form submission with XSS prevention
+         */
         async function handleMainContactSubmit(event) {
             event.preventDefault();
-            const name = document.getElementById('main-contact-name').value;
-            const phone = document.getElementById('main-contact-phone').value;
-            const email = document.getElementById('main-contact-email').value || "Không cung cấp";
+            const name = escapeHtml(document.getElementById('main-contact-name').value);
+            const phone = escapeHtml(document.getElementById('main-contact-phone').value);
+            const email = escapeHtml(document.getElementById('main-contact-email').value || "Không cung cấp");
 
-            // 1. Hiển thị Popup báo đang tải để khách hàng chờ
             Swal.fire({
                 title: 'Đang gửi thông tin...',
                 text: 'Vui lòng chờ trong giây lát.',
-                allowOutsideClick: false, // Không cho tắt popup khi click ra ngoài
+                allowOutsideClick: false,
                 didOpen: () => {
-                    Swal.showLoading(); // Bật biểu tượng xoay vòng
+                    Swal.showLoading();
                 }
             });
 
             try {
-                // 2. Thêm "await" để code đứng lại đây chờ mạng gửi xong mới đi tiếp
                 await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     mode: 'no-cors',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ type: 'contact', name, phone, email })
+                    body: JSON.stringify({
+                        type: 'contact',
+                        name,
+                        phone,
+                        email,
+                        clientId: getClientId()
+                    })
                 });
 
-                // 3. Nếu qua được bước trên (có mạng, gửi thành công) thì mới báo Thành công
                 Swal.fire({
                     title: "Đã gửi yêu cầu!",
                     html: `Gửi yêu cầu liên hệ thành công!<br><br><b>Thông tin của bạn:</b><br>Họ và tên: ${name}<br>Số điện thoại: ${phone}<br>Email: ${email}<br><br>Đội ngũ Knotty sẽ trực tiếp gọi điện lại để hỗ trợ bạn nhanh nhất nhé.`,
@@ -1666,7 +1803,7 @@
 
                 Swal.fire({
                     title: "Lỗi kết nối!",
-                    text: "Không thể tạo đơn hàng. Vui lòng kiểm tra lại mạng Internet và thử lại.",
+                    text: "Không thể gửi yêu cầu. Vui lòng kiểm tra lại mạng Internet và thử lại.",
                     icon: "error",
                     confirmButtonColor: "#d4af37",
                     confirmButtonText: "Đã hiểu"
@@ -1674,25 +1811,31 @@
             }
         }
 
-        // --- Cấu hình Toast thông báo góc phải cho giỏ hàng ---
+        // ===================================
+        // TOAST NOTIFICATION
+        // ===================================
+
         const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
             showConfirmButton: false,
             timer: 3000,
             timerProgressBar: true,
+            customClass: {
+                container: 'custom-swal-toast-container',
+                popup: 'custom-swal-toast'
+            },
             didOpen: (toast) => {
                 toast.onmouseenter = Swal.stopTimer;
                 toast.onmouseleave = Swal.resumeTimer;
             }
         });
 
-        // 2. HÀM TỰ ĐỘNG IN SẢN PHẨM RA GIAO DIỆN
-        // --- 4. LOGIC LẤY VÀ HIỂN THỊ SẢN PHẨM TỪ GOOGLE SHEETS ---
+        // ===================================
+        // FEATURED PRODUCTS DISPLAY
+        // ===================================
 
-        // Hàm 1: Vẽ giao diện sản phẩm ra màn hình
         function hienThiSanPham(danhSach) {
-            // 1. Tự động tương thích với cả 2 ID container phòng trường hợp bạn đổi tên trên HTML
             const container = document.getElementById('productGrid') || document.getElementById('products-container');
             if (!container) return;
 
@@ -1704,32 +1847,27 @@
             let html = "";
 
             danhSach.forEach(prod => {
-                let name = prod.title || prod.name || "Sản phẩm chưa có tên";
+                let name = escapeHtml(prod.title || prod.name || "Sản phẩm chưa có tên");
                 let price = parseInt(prod.rawPrice || prod.price || 0);
-                let priceText = prod.priceText || "Liên hệ";
+                let priceText = escapeHtml(prod.priceText || "Liên hệ");
                 let img = prod.img || "https://via.placeholder.com/300x200?text=Chưa+có+ảnh";
 
-                // 2. Chuyển đổi dữ liệu cột type (hỗ trợ cả dạng chuỗi hoặc mảng dữ liệu từ Sheet)
                 let typesArray = Array.isArray(prod.type) ? prod.type : [prod.type || ""];
                 let mainTypeStr = typesArray[0] || "canhan";
                 let subCatStr = prod.subCategory || "";
 
                 let nutHtml = "";
 
-                // 3. Logic phân định loại nút chuẩn: Nếu thuộc nhóm 'thietke' hoặc cấu hình hành động 'tuvan'
                 if (typesArray.includes('thietke') || prod.buttonAction === 'tuvan' || prod.type === 'tuvan') {
                     nutHtml = `<button class="btn-add" onclick="openContactModal()">Nhận tư vấn</button>`;
                 } else {
-                    // 4. Kích hoạt gọi hàm addToCart trực tiếp khi click, truyền kèm phân loại để hỗ trợ lọc Voucher nâng cao
-                    // Dùng replace(/'/g, "\\'") để chống lỗi vỡ chuỗi khi tên sản phẩm chứa dấu nháy đơn
                     nutHtml = `<button class="btn-add add-to-cart" onclick="addToCart('${name.replace(/'/g, "\\'")}', ${price}, '${mainTypeStr}', '${subCatStr}')">Thêm vào giỏ</button>`;
                 }
 
-                // 5. Đồng bộ cấu trúc layout Card giống thiết kế CSS của hệ thống
                 html += `
             <div class="product-card">
                 <div class="product-img" style="position: relative;">
-                    <img src="${img}" alt="${name}" style="width: 100%; height: 200px; object-fit: cover;">
+                    <img src="${img}" alt="${name}" style="width: 100%; height: 200px; object-fit: cover;" onerror="this.src='https://via.placeholder.com/300x200?text=Chưa+có+ảnh'">
                 </div>
                 <div class="product-info" style="padding: 20px;">
                     <h4 style="margin-bottom: 10px; font-size: 1.1rem; height: 50px; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;">${name}</h4>
@@ -1742,7 +1880,7 @@
 
             container.innerHTML = html;
         }
-        // Hàm 2: Gọi API lấy dữ liệu từ Google Sheets
+
         async function loadFeaturedGifts() {
             const container = document.getElementById('products-container');
             if (container) {
@@ -1750,11 +1888,9 @@
             }
 
             try {
-                // Fetch dữ liệu từ API thông qua phương thức GET
-                const response = await fetch(GOOGLE_SCRIPT_URL + "?action=getFeaturedGifts");
+                const response = await fetch(GOOGLE_SCRIPT_URL + "?action=getFeaturedGifts&clientId=" + getClientId());
                 const data = await response.json();
 
-                // Trả dữ liệu vào hàm hiển thị
                 hienThiSanPham(data);
             } catch (error) {
                 console.error("Lỗi khi tải dữ liệu từ Google Sheets:", error);
@@ -1764,55 +1900,370 @@
             }
         }
 
-        // Kích hoạt việc gọi dữ liệu ngay khi tải trang
         loadFeaturedGifts();
         loadVouchersAndNotis();
 
-        // 3. XỬ LÝ LƯU GIỎ HÀNG THÔNG MINH (Event Delegation)
-        // --- LOGIC XÓA GIỎ HÀNG KHI F5 (TẢI LẠI TRANG) ---
-        // 1. Kiểm tra xem người dùng có đang ấn F5 / Tải lại trang hay không
-        const navEntries = performance.getEntriesByType("navigation");
-        if (navEntries.length > 0 && navEntries[0].type === "reload") {
-            // Nếu đúng là tải lại trang, xóa sạch dữ liệu giỏ hàng trong bộ nhớ
-            localStorage.removeItem('knotty_cart');
-        }
+        // ===================================
+        // CART MANAGEMENT
+        // ===================================
 
-        // 2. Khởi tạo giỏ hàng (Nếu chuyển trang bình thường thì vẫn lấy dữ liệu, nếu F5 thì sẽ là mảng rỗng)
+        // Lấy giỏ hàng từ bộ nhớ (BỎ ĐOẠN CODE XÓA GIỎ HÀNG KHI F5)
         let cart = JSON.parse(localStorage.getItem('knotty_cart')) || [];
         const cartCount = document.getElementById('cart-count');
         const cartItemsContainer = document.getElementById('cart-items-container');
         const cartTotalPrice = document.getElementById('cart-total-price');
 
+        // ===================================
+        // ACCOUNT MANAGEMENT (NEW)
+        // ===================================
+        let currentUser = JSON.parse(localStorage.getItem('knotty_user')) || null;
+
+        function checkLoginStatus() {
+            const authLabel = document.getElementById('auth-label');
+            if (currentUser) {
+                let shortName = currentUser.name.split(' ').pop();
+                authLabel.innerText = "Chào, " + shortName;
+            } else {
+                authLabel.innerText = "Đăng nhập";
+            }
+        }
+        window.addEventListener('load', () => {
+            checkLoginStatus(); // Cập nhật tên hiển thị ở nút tài khoản
+
+            // Đảm bảo đọc lại giỏ hàng từ Local Storage một lần nữa cho chắc chắn
+            let savedCart = localStorage.getItem('knotty_cart');
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+            }
+
+            // Gọi hàm cập nhật UI để hiển thị ngay số lượng và danh sách sản phẩm trong giỏ
+            if (typeof updateCartUI === "function") {
+                updateCartUI();
+            }
+        });
+
+        function toggleAuth() {
+            if (currentUser) {
+                const dropdown = document.getElementById('auth-dropdown');
+                dropdown.classList.toggle('active');
+            } else {
+                document.getElementById('auth-modal').style.display = "block";
+                document.body.classList.add('no-scroll');
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('auth-modal').style.display = "none";
+            document.body.classList.remove('no-scroll');
+        }
+
+        // Đóng dropdown tài khoản khi click ra ngoài
+        document.addEventListener('click', function (e) {
+            const btn = document.getElementById('auth-menu-btn');
+            const drop = document.getElementById('auth-dropdown');
+            if (drop && drop.classList.contains('active') && !btn.contains(e.target) && !drop.contains(e.target)) {
+                drop.classList.remove('active');
+            }
+        });
+
+        function switchAuth(type) {
+            if (type === 'register') {
+                document.getElementById('login-form-box').style.display = 'none';
+                document.getElementById('register-form-box').style.display = 'block';
+            } else {
+                document.getElementById('register-form-box').style.display = 'none';
+                document.getElementById('login-form-box').style.display = 'block';
+            }
+        }
+
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const phone = document.getElementById('login-phone').value;
+            const password = document.getElementById('login-password').value;
+
+            Swal.fire({ title: 'Đang đăng nhập...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'login', phone, password })
+                });
+                const data = await res.json();
+
+                if (data.result === 'success') {
+                    currentUser = data.user;
+                    localStorage.setItem('knotty_user', JSON.stringify(currentUser));
+
+                    // Tối ưu gộp giỏ hàng: 
+                    // Nếu khách vãng lai đã thêm đồ vào giỏ, giữ nguyên đồ đó và đẩy lên mây.
+                    // Nếu khách chưa thêm gì, mới kéo giỏ hàng từ mây về máy.
+                    if (currentUser.cart && currentUser.cart.length > 0) {
+                        if (cart.length === 0) {
+                            cart = currentUser.cart; // Kéo từ mây về
+                        } else {
+                            syncCartToCloud(); // Đẩy đồ hiện tại lên mây
+                        }
+                        localStorage.setItem('knotty_cart', JSON.stringify(cart));
+                        updateCartUI();
+                    } else if (cart.length > 0) {
+                        // Nếu mây không có gì nhưng máy đang có, đẩy lên mây
+                        syncCartToCloud();
+                    }
+
+                    checkLoginStatus();
+                    closeAuthModal();
+                    Swal.fire({ title: 'Thành công!', text: 'Chào mừng bạn trở lại.', icon: 'success', timer: 1500, showConfirmButton: false });
+                } else {
+                    Swal.fire('Thất bại', data.message, 'error');
+                }
+            } catch (err) { Swal.fire('Lỗi kết nối', 'Vui lòng thử lại sau.', 'error'); }
+        }
+
+        async function handleRegisterSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('reg-name').value;
+            const phone = document.getElementById('reg-phone').value;
+            const email = document.getElementById('reg-email').value;
+            const password = document.getElementById('reg-password').value;
+
+            Swal.fire({ title: 'Đang tạo tài khoản...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'register', name, phone, email, password })
+                });
+                const data = await res.json();
+
+                if (data.result === 'success') {
+                    currentUser = data.user;
+                    localStorage.setItem('knotty_user', JSON.stringify(currentUser));
+
+                    // Đồng bộ giỏ hàng local hiện tại lên mây ngay lập tức
+                    syncCartToCloud();
+
+                    checkLoginStatus();
+                    closeAuthModal();
+                    Swal.fire({ title: 'Đăng ký thành công!', icon: 'success', timer: 1500, showConfirmButton: false });
+                } else {
+                    Swal.fire('Thất bại', data.message, 'error');
+                }
+            } catch (err) { Swal.fire('Lỗi kết nối', 'Vui lòng thử lại sau.', 'error'); }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('knotty_user');
+            cart = []; // Xóa giỏ hàng khi logout
+            localStorage.removeItem('knotty_cart');
+            updateCartUI();
+            checkLoginStatus();
+            document.getElementById('auth-dropdown').classList.remove('active');
+            Toast.fire({ icon: "info", title: "Đã đăng xuất" });
+        }
+
+        // ===================================
+        // NÂNG CẤP TÀI KHOẢN (ĐỔI PASS, LỊCH SỬ ĐƠN)
+        // ===================================
+
+        let loadedOrders = []; // Lưu tạm danh sách đơn hàng để xem chi tiết
+
+        // --- MỞ/ĐÓNG MODAL ĐỔI MẬT KHẨU ---
+        function openChangePasswordModal() {
+            document.getElementById('auth-dropdown').classList.remove('active');
+            document.getElementById('change-password-modal').style.display = "block";
+            document.body.classList.add('no-scroll');
+        }
+        function closeChangePasswordModal() {
+            document.getElementById('change-password-modal').style.display = "none";
+            document.body.classList.remove('no-scroll');
+        }
+
+        async function handleChangePasswordSubmit(e) {
+            e.preventDefault();
+            const oldPass = document.getElementById('old-password').value;
+            const newPass = document.getElementById('new-password').value;
+            const confirmPass = document.getElementById('confirm-new-password').value;
+
+            if (newPass !== confirmPass) {
+                Swal.fire('Lỗi', 'Mật khẩu xác nhận không khớp!', 'error');
+                return;
+            }
+
+            Swal.fire({ title: 'Đang xử lý...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'changePassword', phone: currentUser.phone, oldPassword: oldPass, newPassword: newPass })
+                });
+                const data = await res.json();
+
+                if (data.result === 'success') {
+                    closeChangePasswordModal();
+                    Swal.fire('Thành công', data.message, 'success');
+                    document.getElementById('old-password').value = '';
+                    document.getElementById('new-password').value = '';
+                    document.getElementById('confirm-new-password').value = '';
+                } else {
+                    Swal.fire('Thất bại', data.message, 'error');
+                }
+            } catch (err) { Swal.fire('Lỗi kết nối', 'Vui lòng thử lại.', 'error'); }
+        }
+
+        // --- LỊCH SỬ ĐƠN HÀNG VÀ HÓA ĐƠN ---
+        async function openOrderHistoryModal() {
+            document.getElementById('auth-dropdown').classList.remove('active');
+            document.getElementById('order-history-modal').style.display = "block";
+            document.body.classList.add('no-scroll');
+
+            const listContainer = document.getElementById('order-history-list');
+            listContainer.innerHTML = '<div style="text-align:center; padding: 20px;"><i class="fas fa-spinner fa-spin fa-2x" style="color:#d4af37"></i><p>Đang tải dữ liệu...</p></div>';
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'getOrderHistory', phone: currentUser.phone })
+                });
+                const data = await res.json();
+
+                if (data.result === 'success') {
+                    loadedOrders = data.orders;
+                    if (loadedOrders.length === 0) {
+                        listContainer.innerHTML = '<p style="text-align:center; color:#777;">Bạn chưa có đơn hàng nào.</p>';
+                        return;
+                    }
+
+                    let html = '';
+                    loadedOrders.forEach((order, index) => {
+                        let dateStr = new Date(order.date).toLocaleDateString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                        let statusClass = order.status.includes('Chưa') ? 'status-chua-xu-ly' : 'status-hoan-thanh';
+                        html += `
+                            <div class="history-order-item" onclick="showInvoiceDetail(${index})">
+                                <div style="display:flex; justify-content:space-between; margin-bottom: 8px;">
+                                    <strong>Mã ĐH: ${order.invoiceId}</strong>
+                                    <span class="history-status ${statusClass}">${order.status}</span>
+                                </div>
+                                <div style="color: #555; font-size: 0.9rem; margin-bottom: 5px;">📅 Ngày: ${dateStr}</div>
+                                <div style="color: #d4af37; font-weight:bold;">💰 Tổng: ${escapeHtml(order.total)}</div>
+                                <div style="color: #777; font-size: 0.8rem; margin-top: 5px; font-style:italic;">(Nhấn để xem chi tiết hóa đơn)</div>
+                            </div>
+                        `;
+                    });
+                    listContainer.innerHTML = html;
+                } else {
+                    listContainer.innerHTML = '<p style="color:red;">Lỗi tải dữ liệu.</p>';
+                }
+            } catch (err) { listContainer.innerHTML = '<p style="color:red;">Lỗi kết nối mạng.</p>'; }
+        }
+
+        function closeOrderHistoryModal() {
+            document.getElementById('order-history-modal').style.display = "none";
+            document.body.classList.remove('no-scroll');
+        }
+
+        function showInvoiceDetail(index) {
+            const order = loadedOrders[index];
+            if (!order) return;
+
+            let dateStr = new Date(order.date).toLocaleString('vi-VN');
+
+            // Xử lý chuỗi items (Sản phẩm x Số lượng)
+            let itemsHtml = '<ul>';
+            let itemsArray = order.items.split(';');
+            itemsArray.forEach(item => {
+                if (item.trim() !== '') itemsHtml += `<li style="margin-bottom:5px;">${item.trim()}</li>`;
+            });
+            itemsHtml += '</ul>';
+
+            const html = `
+                <div style="text-align:center; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom:10px;">
+                    <h3 style="margin:0;">KNOTTY</h3>
+                    <p style="margin:5px 0 0 0; color:#777; font-size:0.9rem;">Mã hóa đơn: ${order.invoiceId}</p>
+                    <p style="margin:0; color:#777; font-size:0.9rem;">Ngày đặt: ${dateStr}</p>
+                </div>
+                <p><strong>Người nhận:</strong> ${order.name}</p>
+                <p><strong>Điện thoại:</strong> ${order.phone}</p>
+                <p><strong>Địa chỉ:</strong> ${order.address}</p>
+                <p><strong>Ghi chú:</strong> ${order.note || "Không"}</p>
+                <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+                <p><strong>SẢN PHẨM:</strong></p>
+                ${itemsHtml}
+                <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
+                <div style="text-align: right; font-size: 1.2rem; color: #d4af37;">
+                    <strong>TỔNG TIỀN: ${escapeHtml(order.total)}</strong>
+                </div>
+            `;
+
+            document.getElementById('invoice-detail-content').innerHTML = html;
+
+            // Tạm ẩn Lịch sử, hiện Hóa đơn
+            document.getElementById('order-history-modal').style.display = "none";
+            document.getElementById('invoice-detail-modal').style.display = "block";
+        }
+
+        function closeInvoiceDetailModal() {
+            document.getElementById('invoice-detail-modal').style.display = "none";
+            // Hiện lại danh sách đơn hàng
+            document.getElementById('order-history-modal').style.display = "block";
+        }
+
+        // Hàm đồng bộ giỏ hàng lên Google Sheets (Chạy ngầm)
+        let syncTimeout;
+        function syncCartToCloud() {
+            if (!currentUser) return; // Khách vãng lai thì chỉ lưu Local
+            clearTimeout(syncTimeout);
+            syncTimeout = setTimeout(() => {
+                fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'syncCart', userPhone: currentUser.phone, cartData: cart })
+                }).catch(e => console.log('Lỗi đồng bộ giỏ hàng ngầm'));
+            }, 1000); // Debounce 1 giây để tránh gọi API liên tục
+        }
+
         function addToCart(name, price, type, subCategory) {
-            const existingItem = cart.find(item => item.name === name);
+            // ✅ FIX: Ensure product name is properly stored
+            const productName = String(name).trim();
+
+            const existingItem = cart.find(item => item.name === productName);
             if (existingItem) {
                 existingItem.quantity += 1;
             } else {
-                // Lưu thêm type và subCategory vào giỏ hàng
-                cart.push({ name, price, type, subCategory, quantity: 1 });
+                // ✅ CRITICAL: Store name, price, type, subCategory explicitly
+                cart.push({
+                    name: productName,
+                    price: parseInt(price) || 0,
+                    type: String(type || 'khac').trim(),
+                    subCategory: String(subCategory || '').trim(),
+                    quantity: 1
+                });
             }
             updateCartUI();
 
             Toast.fire({
                 icon: "success",
-                title: `Đã thêm "${name}" vào giỏ hàng!`
+                title: `Đã thêm "${productName}" vào giỏ hàng!`
             });
         }
 
-        // CHỨC NĂNG HIỂN THỊ CỬA SỔ GIỎ HÀNG
         function updateCartUI() {
             autoApplyBestVoucherSilent();
             const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
             cartCount.innerText = totalItems;
 
             if (totalItems > 0) {
-                cartCount.style.display = "inline-block"; // Hiện chấm đỏ nếu có hàng
+                cartCount.style.display = "inline-block";
             } else {
-                cartCount.style.display = "none"; // Ẩn đi nếu giỏ trống
+                cartCount.style.display = "none";
             }
 
-            // FIX LỖI: Đưa lệnh lưu vào bộ nhớ lên ngay đầu tiên để chắc chắn luôn được lưu
             localStorage.setItem('knotty_cart', JSON.stringify(cart));
+            syncCartToCloud();
 
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = "<p>Giỏ hàng đang trống.</p>";
@@ -1820,37 +2271,42 @@
                 return;
             }
 
+            // ✅ FIX: Properly display cart items with names
             let html = "";
             let total = 0;
 
             cart.forEach((item, index) => {
-                const itemTotal = item.price * item.quantity;
+                // Ensure item.name exists and is a string
+                const itemName = String(item.name || 'Sản phẩm không tên').trim();
+                const itemPrice = parseInt(item.price || 0);
+                const itemQty = parseInt(item.quantity || 1);
+                const itemTotal = itemPrice * itemQty;
+
                 html += `
-                    <div class="cart-item" style="align-items: center;">
-                        <div style="flex: 1;">
-                            <span style="font-weight: 500;">${item.name}</span>
-                            <div style="font-size: 0.85rem; color: #777; margin-top: 8px; display: flex; align-items: center; gap: 12px;">
-                                <span>${item.price.toLocaleString('vi-VN')} VNĐ</span>
-                                
-                                <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; height: 26px;">
-                                    <button onclick="decreaseQuantity(${index})" style="width: 26px; height: 100%; background: #f9f9f9; border: none; border-right: 1px solid #ddd; cursor: pointer; font-weight: bold; color: #555;">-</button>
-                                    <span style="padding: 0 12px; font-weight: bold; color: #d4af37; font-size: 0.95rem; background: #fff; height: 100%; display: flex; align-items: center;">${item.quantity}</span>
-                                    <button onclick="increaseQuantity(${index})" style="width: 26px; height: 100%; background: #f9f9f9; border: none; border-left: 1px solid #ddd; cursor: pointer; font-weight: bold; color: #555;">+</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div style="font-weight: 500;">
-                            ${itemTotal.toLocaleString('vi-VN')} VNĐ 
-                            <span style="color:red; cursor:pointer; margin-left:15px; font-weight:bold; font-size: 1.2rem;" title="Xóa sản phẩm" onclick="removeItem(${index})">&times;</span>
+            <div class="cart-item" style="align-items: center;">
+                <div style="flex: 1;">
+                    <span style="font-weight: 500;">${escapeHtml(itemName)}</span>
+                    <div style="font-size: 0.85rem; color: #777; margin-top: 8px; display: flex; align-items: center; gap: 12px;">
+                        <span>${itemPrice.toLocaleString('vi-VN')} VNĐ</span>
+                        
+                        <div style="display: flex; align-items: center; border: 1px solid #ddd; border-radius: 4px; overflow: hidden; height: 26px;">
+                            <button onclick="decreaseQuantity(${index})" style="width: 26px; height: 100%; background: #f9f9f9; border: none; border-right: 1px solid #ddd; cursor: pointer; font-weight: bold; color: #555;">-</button>
+                            <span style="padding: 0 12px; font-weight: bold; color: #d4af37; font-size: 0.95rem; background: #fff; height: 100%; display: flex; align-items: center;">${itemQty}</span>
+                            <button onclick="increaseQuantity(${index})" style="width: 26px; height: 100%; background: #f9f9f9; border: none; border-left: 1px solid #ddd; cursor: pointer; font-weight: bold; color: #555;">+</button>
                         </div>
                     </div>
-                `;
+                </div>
+                <div style="font-weight: 500;">
+                    ${itemTotal.toLocaleString('vi-VN')} VNĐ 
+                    <span style="color:red; cursor:pointer; margin-left:15px; font-weight:bold; font-size: 1.2rem;" title="Xóa sản phẩm" onclick="removeItem(${index})">&times;</span>
+                </div>
+            </div>`;
                 total += itemTotal;
             });
 
             cartItemsContainer.innerHTML = html;
 
-            // LOGIC TÍNH TOÁN VOUCHER THÔNG MINH (CÓ ĐIỀU KIỆN)
+            // ✅ VOUCHER CALCULATION (existing code, preserved)
             let finalDiscount = 0;
             let finalTotal = total;
 
@@ -1864,7 +2320,6 @@
 
                     let eligibleTotal = 0;
 
-                    // Duyệt xem những món nào trong giỏ hàng được phép giảm giá
                     cart.forEach(item => {
                         let isEligible = true;
                         if (cType !== 'all' && cType !== item.type) isEligible = false;
@@ -1876,18 +2331,15 @@
                     });
 
                     if (eligibleTotal > 0) {
-                        // Tính toán mức giảm dựa trên TỔNG TIỀN CÁC MÓN ĐƯỢC ÁP DỤNG
                         let val = parseFloat(v['Giá trị']);
                         finalDiscount = v['Loại giảm'] === 'Phần trăm' ? eligibleTotal * (val / 100) : val;
 
-                        // Không được giảm lố số tiền của các món đó
                         if (finalDiscount > eligibleTotal) finalDiscount = eligibleTotal;
 
                         document.getElementById('voucher-message').style.display = 'none';
                     } else {
-                        // Nếu trong giỏ không có món nào khớp điều kiện
                         finalDiscount = 0;
-                        appliedVoucher = null; // Gỡ bỏ voucher
+                        appliedVoucher = null;
                         document.getElementById('voucher-select').value = "";
                         document.getElementById('voucher-message').innerText = "Voucher không áp dụng cho các sản phẩm đang có trong giỏ hàng!";
                         document.getElementById('voucher-message').style.display = 'block';
@@ -1899,47 +2351,34 @@
 
             if (finalDiscount > 0) {
                 cartTotalPrice.innerHTML = `
-                    <div style="font-size: 0.9rem; color: #777; text-decoration: line-through;">${total.toLocaleString('vi-VN')} VNĐ</div>
-                    <div style="color: #2ecc71; font-size: 0.9rem; margin-bottom: 5px;">Mã ${appliedVoucher.code}: -${finalDiscount.toLocaleString('vi-VN')} VNĐ</div>
-                    <div style="color: #e74c3c;">${finalTotal.toLocaleString('vi-VN')} VNĐ</div>
-                `;
+            <div style="font-size: 0.9rem; color: #777; text-decoration: line-through;">${total.toLocaleString('vi-VN')} VNĐ</div>
+            <div style="color: #2ecc71; font-size: 0.9rem; margin-bottom: 5px;">Mã ${appliedVoucher.code}: -${finalDiscount.toLocaleString('vi-VN')} VNĐ</div>
+            <div style="color: #e74c3c;">${finalTotal.toLocaleString('vi-VN')} VNĐ</div>
+        `;
             } else {
                 cartTotalPrice.innerText = total.toLocaleString('vi-VN') + " VNĐ";
             }
         }
 
-        // TÍNH NĂNG MỚI: Tự động đồng bộ giỏ hàng theo thời gian thực (Real-time)
-        // Nếu khách mở trang chủ ở tab 1, trang mua hàng ở tab 2. Xóa đồ ở tab này thì tab kia tự mất ngay lập tức!
-        window.addEventListener('storage', function (e) {
-            if (e.key === 'knotty_cart') {
-                cart = JSON.parse(e.newValue) || [];
-                updateCartUI();
-            }
-        });
-
         function removeItem(index) {
-            cart.splice(index, 1); // Xóa hoàn toàn sản phẩm đó khỏi giỏ
+            cart.splice(index, 1);
             updateCartUI();
         }
 
-        // --- HÀM TĂNG SỐ LƯỢNG ---
         function increaseQuantity(index) {
             cart[index].quantity += 1;
             updateCartUI();
         }
 
-        // --- HÀM GIẢM SỐ LƯỢNG ---
         function decreaseQuantity(index) {
             if (cart[index].quantity > 1) {
                 cart[index].quantity -= 1;
                 updateCartUI();
             } else {
-                // Nếu số lượng lùi về 0 thì tự động xóa sản phẩm đó khỏi giỏ
                 removeItem(index);
             }
         }
 
-        // --- 5. LOGIC TIẾN HÀNH ĐẶT HÀNG ---
         function checkout() {
             if (cart.length === 0) {
                 closeCartModal();
@@ -1951,34 +2390,46 @@
                     confirmButtonText: "Đi mua sắm"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Chuyển hướng người dùng sang trang quatang.html
-                        window.location.href = 'quatang.html';
+                        window.location.href = 'quatang_new.html';
                     }
                 });
                 return;
+            }
+            if (currentUser) {
+                document.getElementById('order-name').value = currentUser.name || "";
+                document.getElementById('order-phone').value = currentUser.phone || "";
+                document.getElementById('order-email').value = currentUser.email || "";
             }
             closeCartModal();
             openOrderModal();
         }
 
-        // --- LOGIC TIẾN HÀNH ĐẶT HÀNG ---
+        /**
+         * Handle order submission with price verification
+         */
         async function handleOrderSubmit(event) {
             event.preventDefault();
 
-            const name = document.getElementById('order-name').value;
-            const phone = document.getElementById('order-phone').value;
-            const email = document.getElementById('order-email').value;
-            const address = document.getElementById('order-address').value;
-            const note = document.getElementById('order-note').value || "Không có";
-            const shippingMethod = document.querySelector('input[name="shipping-method"]:checked').value;
+            const name = escapeHtml(document.getElementById('order-name').value);
+            const phone = escapeHtml(document.getElementById('order-phone').value);
+            const email = escapeHtml(document.getElementById('order-email').value);
+            const address = escapeHtml(document.getElementById('order-address').value);
+            const note = escapeHtml(document.getElementById('order-note').value || "Không có");
+            const shippingMethod = escapeHtml(document.querySelector('input[name="shipping-method"]:checked').value);
 
             const currentCartData = [...cart];
             const invoiceId = `SG-${Math.floor(100000 + Math.random() * 900000)}`;
-            const itemsText = currentCartData.map(item => `${item.name} (SL: ${item.quantity})`).join('; ');
 
-            // --- BƯỚC 1: TÍNH TOÁN LẠI TỔNG TIỀN VÀ VOUCHER ĐỂ XUẤT DỮ LIỆU SẠCH ---
+            // ✅ FIX: Properly construct items text with escaped names
+            const itemsText = currentCartData.map(item => {
+                const itemName = String(item.name || 'Sản phẩm').trim();
+                return `${escapeHtml(itemName)} (SL: ${item.quantity})`;
+            }).join('; ');
+
             let subTotal = 0;
-            currentCartData.forEach(item => { subTotal += (item.price * item.quantity); });
+            currentCartData.forEach(item => {
+                subTotal += (parseInt(item.price || 0) * parseInt(item.quantity || 1));
+            });
 
             let finalDiscount = 0;
             if (appliedVoucher && availableVouchers && availableVouchers.length > 0) {
@@ -2007,14 +2458,11 @@
 
             let finalTotal = subTotal - finalDiscount;
 
-            // --- BƯỚC 2: CHUẨN BỊ CHUỖI TIỀN TỆ ĐỂ GỬI VỀ GOOGLE SHEETS ---
-            // Yêu cầu: Tiền đã giảm giá (Mã voucher: -Số tiền giảm VNĐ)
             let totalPriceForSheet = `${finalTotal.toLocaleString('vi-VN')} VNĐ`;
             if (finalDiscount > 0) {
                 totalPriceForSheet = `${finalTotal.toLocaleString('vi-VN')} VNĐ (Mã ${appliedVoucher.code}: -${finalDiscount.toLocaleString('vi-VN')} VNĐ)`;
             }
 
-            // Hiện popup đang tải
             Swal.fire({
                 title: 'Đang xử lý đơn hàng...',
                 text: 'Vui lòng không đóng trình duyệt lúc này.',
@@ -2025,7 +2473,6 @@
             });
 
             try {
-                // Chờ gửi dữ liệu thành công
                 const res = await fetch(GOOGLE_SCRIPT_URL, {
                     method: 'POST',
                     headers: {
@@ -2041,9 +2488,11 @@
                         shippingMethod,
                         items: itemsText,
                         cartData: currentCartData,
-                        totalPrice: totalPriceForSheet, // Gửi chuỗi giá đã làm sạch và format
+                        totalPrice: totalPriceForSheet,
                         note,
-                        voucherCode: appliedVoucher ? appliedVoucher.code : null
+                        voucherCode: appliedVoucher ? appliedVoucher.code : null,
+                        clientId: getClientId(),
+                        userPhone: currentUser ? currentUser.phone : null
                     })
                 });
 
@@ -2059,10 +2508,60 @@
                     return;
                 }
 
-                // Thông báo thành công & Hiển thị hóa đơn
+                // ✅ FIX: Generate and display detailed invoice
+                let invoiceHtml = `
+            <div style="text-align: left; font-size: 0.95rem; line-height: 1.5; color:#444;">
+                <p style="margin-bottom: 5px;"><b>Mã hóa đơn:</b> ${escapeHtml(invoiceId)}</p>
+                <p style="margin-bottom: 5px;"><b>Khách nhận:</b> ${escapeHtml(name)}</p>
+                <p style="margin-bottom: 5px;"><b>Số điện thoại:</b> ${escapeHtml(phone)}</p>
+                <p style="margin-bottom: 5px;"><b>Địa chỉ:</b> ${escapeHtml(address)}</p>
+                <p style="margin-bottom: 5px;"><b>Vận chuyển:</b> ${escapeHtml(shippingMethod)}</p>
+                <p style="margin-bottom: 5px;"><b>Ghi chú:</b> ${escapeHtml(note)}</p>
+                <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #ccc;">
+                
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid #ddd; text-align: left; font-weight: bold;">
+                            <th style="padding: 8px 0;">Sản phẩm</th>
+                            <th style="padding: 8px 0; text-align: center; width: 50px;">SL</th>
+                            <th style="padding: 8px 0; text-align: right; width: 110px;">Thành tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+                currentCartData.forEach(item => {
+                    const itemTotal = item.price * item.quantity;
+                    const safeName = String(item.name || 'Sản phẩm').trim();
+                    invoiceHtml += `
+                <tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 8px 0;">${escapeHtml(safeName)}</td>
+                    <td style="padding: 8px 0; text-align: center;">${item.quantity}</td>
+                    <td style="padding: 8px 0; text-align: right;">${itemTotal.toLocaleString('vi-VN')} VNĐ</td>
+                </tr>`;
+                });
+
+                if (finalDiscount > 0) {
+                    invoiceHtml += `
+                <tr style="border-bottom: 1px solid #eee; color: #2ecc71; font-weight: 500;">
+                    <td style="padding: 8px 0;">Mã giảm giá (${escapeHtml(appliedVoucher.code)})</td>
+                    <td style="padding: 8px 0; text-align: center;">1</td>
+                    <td style="padding: 8px 0; text-align: right;">-${finalDiscount.toLocaleString('vi-VN')} VNĐ</td>
+                </tr>`;
+                }
+
+                invoiceHtml += `
+                    </tbody>
+                </table>
+                <hr style="margin: 15px 0; border: 0; border-top: 2px solid #333;">
+                <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color:#222;">
+                    <span>Tổng thanh toán:</span>
+                    <span style="color: #e74c3c;">${finalTotal.toLocaleString('vi-VN')} VNĐ</span>
+                </div>
+            </div>`;
+
                 Swal.fire({
                     title: "ĐẶT HÀNG THÀNH CÔNG! 🎉",
-                    html: `Cảm ơn bạn <b>${name}</b> đã mua sắm tại Knotty<br>Đơn hàng của bạn đang được xử lý. Chúng tôi sẽ gọi điện xác thực trong vòng vài phút tới.`,
+                    html: `Cảm ơn bạn <b>${escapeHtml(name)}</b> đã mua sắm tại Knotty<br>Đơn hàng của bạn đang được xử lý. Chúng tôi sẽ gọi điện xác thực trong vòng vài phút tới.`,
                     icon: "success",
                     showDenyButton: true,
                     confirmButtonColor: "#d4af37",
@@ -2071,62 +2570,6 @@
                     denyButtonText: "Xem hóa đơn"
                 }).then((result) => {
                     if (result.isDenied) {
-                        let invoiceHtml = `
-                    <div style="text-align: left; font-size: 0.95rem; line-height: 1.5; color:#444;">
-                        <p style="margin-bottom: 5px;"><b>Mã hóa đơn:</b> ${invoiceId}</p>
-                        <p style="margin-bottom: 5px;"><b>Khách nhận:</b> ${name}</p>
-                        <p style="margin-bottom: 5px;"><b>Số điện thoại:</b> ${phone}</p>
-                        <p style="margin-bottom: 5px;"><b>Địa chỉ:</b> ${address}</p>
-                        <p style="margin-bottom: 5px;"><b>Vận chuyển:</b> ${shippingMethod}</p>
-                        <p style="margin-bottom: 5px;"><b>Ghi chú:</b> ${note}</p>
-                        <hr style="margin: 15px 0; border: 0; border-top: 1px dashed #ccc;">
-                        
-                        <table style="width: 100%; border-collapse: collapse;">
-                            <thead>
-                                <tr style="border-bottom: 2px solid #ddd; text-align: left; font-weight: bold;">
-                                    <th style="padding: 8px 0;">Sản phẩm</th>
-                                    <th style="padding: 8px 0; text-align: center; width: 50px;">SL</th>
-                                    <th style="padding: 8px 0; text-align: right; width: 110px;">Thành tiền</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
-
-                        // In danh sách sản phẩm
-                        currentCartData.forEach(item => {
-                            const itemTotal = item.price * item.quantity;
-                            invoiceHtml += `
-                        <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 8px 0;">${item.name}</td>
-                            <td style="padding: 8px 0; text-align: center;">${item.quantity}</td>
-                            <td style="padding: 8px 0; text-align: right;">${itemTotal.toLocaleString('vi-VN')} VNĐ</td>
-                        </tr>
-                    `;
-                        });
-
-                        // --- BƯỚC 3: IN THÊM DÒNG VOUCHER VÀO BẢNG HÓA ĐƠN NẾU CÓ ---
-                        if (finalDiscount > 0) {
-                            invoiceHtml += `
-                        <tr style="border-bottom: 1px solid #eee; color: #2ecc71; font-weight: 500;">
-                            <td style="padding: 8px 0;">Mã giảm giá (${appliedVoucher.code})</td>
-                            <td style="padding: 8px 0; text-align: center;">1</td>
-                            <td style="padding: 8px 0; text-align: right;">-${finalDiscount.toLocaleString('vi-VN')} VNĐ</td>
-                        </tr>
-                    `;
-                        }
-
-                        // --- BƯỚC 4: TỔNG THANH TOÁN CHỈ HIỆN SỐ TIỀN CUỐI CÙNG ---
-                        invoiceHtml += `
-                            </tbody>
-                        </table>
-                        <hr style="margin: 15px 0; border: 0; border-top: 2px solid #333;">
-                        <div style="display: flex; justify-content: space-between; font-weight: bold; font-size: 1.1rem; color:#222;">
-                            <span>Tổng thanh toán:</span>
-                            <span style="color: #e74c3c;">${finalTotal.toLocaleString('vi-VN')} VNĐ</span>
-                        </div>
-                    </div>
-                `;
-
                         Swal.fire({
                             title: "HÓA ĐƠN CHI TIẾT",
                             html: invoiceHtml,
@@ -2137,7 +2580,6 @@
                     }
                 });
 
-                // Chỉ làm sạch giỏ hàng khi đặt thành công
                 cart = [];
                 localStorage.removeItem('knotty_cart');
                 updateCartUI();
@@ -2157,67 +2599,23 @@
             }
         }
 
-        // --- 6. LOGIC MỞ/ĐÓNG MENU QUÀ TẶNG (DROPDOWN) ---
-        function toggleDropdown(event) {
-            event.preventDefault(); // Chặn việc cuộn trang
-            const dropdownMenu = document.getElementById('giftDropdown');
-            const dropdownParent = dropdownMenu.closest('.dropdown');
-
-            // Bật/tắt class show
-            dropdownMenu.classList.toggle('show');
-            dropdownParent.classList.toggle('active');
-
-            // --- BỔ SUNG LỆNH KHÓA/MỞ CUỘN MÀN HÌNH ---
-            if (dropdownMenu.classList.contains('show')) {
-                document.body.classList.add('no-scroll');
-            } else {
-                // SỬA Ở ĐÂY: Chỉ mở khóa cuộn nền nếu Menu điện thoại (Sidebar) ĐANG ĐÓNG
-                if (!document.body.classList.contains('menu-open')) {
-                    document.body.classList.remove('no-scroll');
-                }
-            }
-
-            // Tự động đóng menu nếu người dùng click ra vùng khác bên ngoài
-            document.addEventListener('click', function closeClickOutside(e) {
-                if (!dropdownParent.contains(e.target)) {
-                    dropdownMenu.classList.remove('show');
-                    dropdownParent.classList.remove('active');
-
-                    // --- SỬA Ở ĐÂY: Chỉ mở khóa cuộn nền nếu Menu điện thoại ĐANG ĐÓNG ---
-                    if (!document.body.classList.contains('menu-open')) {
-                        document.body.classList.remove('no-scroll');
-                    }
-
-                    // Gỡ bỏ sự kiện lắng nghe để tối ưu bộ nhớ
-                    document.removeEventListener('click', closeClickOutside);
-                }
-            });
-        }
-
-        // --- 7. ĐỒNG BỘ GIỎ HÀNG KHI CHUYỂN TRANG HOẶC QUAY LẠI ---
-        window.addEventListener('pageshow', function (event) {
-            // Lấy lại dữ liệu mới nhất từ bộ nhớ dùng chung
-            cart = JSON.parse(localStorage.getItem('knotty_cart')) || [];
-
-            // Cập nhật lại giao diện giỏ hàng
-            updateCartUI();
-        });
+        // ===================================
+        // VOUCHER SYSTEM
+        // ===================================
 
         let availableVouchers = [];
         let appliedVoucher = null;
 
-        // Hàm gọi lên máy chủ tải Data Voucher và Thông báo
         async function loadVouchersAndNotis() {
             try {
-                const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getVoucherThongBao");
+                const res = await fetch(GOOGLE_SCRIPT_URL + "?action=getVoucherThongBao&clientId=" + getClientId());
                 const data = await res.json();
 
                 const notis = data.filter(item => item['Phân loại'] === 'Thông báo');
                 availableVouchers = data.filter(item => item['Phân loại'] === 'Voucher' && parseInt(item['Số lượng']) > 0);
 
-                // Nếu có thông báo, chèn dải chữ chạy
                 if (notis.length > 0) {
-                    let notiText = notis.map(n => `⭐ ${n['Nội dung']}`).join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
+                    let notiText = notis.map(n => `⭐ ${escapeHtml(n['Nội dung'])}`).join(' &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ');
                     let notiHtml = `
                     <div style="max-width: 1100px; margin: 10px auto 30px; background: #fffdf5; border: 1px dashed #d4af37; border-radius: 8px; display: flex; align-items: center; padding: 10px 15px; box-shadow: 0 2px 8px rgba(212,175,55,0.15);">
                         <span style="font-size: 1.3rem; margin-right: 15px;">📢</span>
@@ -2226,99 +2624,74 @@
                     document.getElementById('noti-anchor-point').innerHTML = notiHtml;
                 }
 
-                // Cập nhật Select Option
                 let selectHtml = `
     <option value="">-- Dùng voucher tối ưu nhất --</option>
     <option value="none">-- Không dùng voucher --</option>
 `;
 
                 availableVouchers.forEach(v => {
-
-                    // Chỉ hiển thị voucher công khai trong dropdown
                     if ((v['Trạng thái hiển thị'] || v['Trạng thái'] || v['Hiển thị'] || '').trim() !== 'Ẩn') {
-
                         let desc = v['Loại giảm'] === 'Phần trăm'
                             ? `Giảm ${v['Giá trị']}%`
                             : `Giảm ${Number(v['Giá trị']).toLocaleString('vi-VN')}VNĐ`;
 
-                        selectHtml += `<option value="${v['Mã']}">${v['Mã']} - ${v['Tên']} (${desc})</option>`;
+                        selectHtml += `<option value="${escapeHtml(v['Mã'])}">${escapeHtml(v['Mã'])} - ${escapeHtml(v['Tên'])} (${desc})</option>`;
                     }
-
                 });
                 document.getElementById('voucher-select').innerHTML = selectHtml;
 
-                // 🌟 THÊM ĐÚNG 1 DÒNG NÀY: 
-                // Ép hệ thống tính toán và tự chọn mã ngay sau khi tải xong Voucher
                 updateCartUI();
 
             } catch (error) { console.error(error); }
         }
 
-        // --- CÁC HÀM XỬ LÝ VOUCHER THỦ CÔNG ---
         function applyVoucher() {
             const val = document.getElementById('voucher-select').value;
 
-            // Trường hợp 1: Khách kiên quyết "Không dùng voucher"
             if (val === 'none') {
-                isManualVoucher = true; // Khóa thủ công, cấm hệ thống tự động tự nhận diện lại
-                appliedVoucher = null;  // Hủy voucher
-                document.getElementById('voucher-message').style.display = 'none';
-                updateCartUI(); // Cập nhật lại giỏ hàng (không có giảm giá)
-                return;
-            }
-
-            // Trường hợp 2: Khách muốn bật lại "Hệ thống tự động chọn"
-            if (!val) {
-                isManualVoucher = false; // Trả quyền lại cho hệ thống
+                isManualVoucher = true;
                 appliedVoucher = null;
                 document.getElementById('voucher-message').style.display = 'none';
-                updateCartUI(); // Gọi lại giỏ hàng, hệ thống sẽ tự động tìm và gán mã tốt nhất
+                updateCartUI();
                 return;
             }
 
-            // Trường hợp 3: Khách chủ động chọn một mã cụ thể từ danh sách
-            isManualVoucher = true; // Khóa thủ công mã này
+            if (!val) {
+                isManualVoucher = false;
+                appliedVoucher = null;
+                document.getElementById('voucher-message').style.display = 'none';
+                updateCartUI();
+                return;
+            }
+
+            isManualVoucher = true;
             appliedVoucher = { code: val };
             document.getElementById('voucher-message').style.display = 'none';
             updateCartUI();
         }
+
         function applyManualVoucher() {
             const code = document.getElementById('voucher-input').value.trim().toUpperCase();
             if (!code) return;
 
-            // Tìm trong toàn bộ kho voucher (cả công khai và mã ẩn)
-            let v = availableVouchers.find(
-                x => x['Mã'].toUpperCase() === code
-            );
+            let v = availableVouchers.find(x => x['Mã'].toUpperCase() === code);
 
             if (v) {
                 isManualVoucher = true;
-
                 let selectBox = document.getElementById('voucher-select');
 
-                // Nếu là mã ẩn thì thêm tạm vào dropdown để hiển thị
                 if ((v['Trạng thái hiển thị'] || v['Trạng thái'] || v['Hiển thị'] || '').trim() === 'Ẩn') {
-
                     if (!selectBox.querySelector(`option[value="${v['Mã']}"]`)) {
-
                         let newOption = document.createElement('option');
-
                         newOption.value = v['Mã'];
-                        newOption.text =
-                            `${v['Mã']} - ${v['Tên']} (Mã ưu đãi riêng)`;
-
+                        newOption.text = `${escapeHtml(v['Mã'])} - ${escapeHtml(v['Tên'])} (Mã ưu đãi riêng)`;
                         selectBox.appendChild(newOption);
                     }
                 }
 
                 selectBox.value = v['Mã'];
-
-                appliedVoucher = {
-                    code: v['Mã']
-                };
-
+                appliedVoucher = { code: v['Mã'] };
                 document.getElementById('voucher-message').style.display = 'none';
-
                 updateCartUI();
 
                 Toast.fire({
@@ -2326,25 +2699,19 @@
                     title: "Áp dụng mã ưu đãi thành công!"
                 });
 
-                // Xóa nội dung khách vừa nhập
                 document.getElementById('voucher-input').value = '';
 
             } else {
-
-                document.getElementById('voucher-message').innerText =
-                    "Mã giảm giá không tồn tại hoặc đã hết lượt!";
-
+                document.getElementById('voucher-message').innerText = "Mã giảm giá không tồn tại hoặc đã hết lượt!";
                 document.getElementById('voucher-message').style.display = 'block';
             }
         }
-        // --- TỰ ĐỘNG TÌM VÀ ÁP DỤNG MÃ TỐI ƯU (CHẠY NGẦM) ---
+
         function autoApplyBestVoucherSilent() {
-            // Nếu khách hàng đã chủ động chọn hoặc nhập mã thủ công, giữ nguyên không đè lên nữa
             if (isManualVoucher) return;
 
             const voucherSelect = document.getElementById('voucher-select');
 
-            // Nếu kho voucher trống hoặc giỏ hàng chưa có gì, reset voucher về trống
             if (!availableVouchers || availableVouchers.length === 0 || cart.length === 0) {
                 appliedVoucher = null;
                 if (voucherSelect) voucherSelect.value = '';
@@ -2354,7 +2721,6 @@
             let bestVoucher = null;
             let maxDiscount = 0;
 
-            // Quét tìm mã có số tiền giảm cao nhất cho giỏ hàng hiện tại
             let publicVouchers = availableVouchers.filter(
                 v => (v['Trạng thái hiển thị'] || v['Trạng thái'] || v['Hiển thị'] || '').trim() !== 'Ẩn'
             );
@@ -2386,18 +2752,52 @@
             });
 
             if (bestVoucher && maxDiscount > 0) {
-                // Áp dụng mã tốt nhất tìm được
                 appliedVoucher = { code: bestVoucher['Mã'] };
-
-                // 🌟 ĐỒNG BỘ HIỂN THỊ: Tự động chuyển ô select sang mã này cho khách thấy
                 if (voucherSelect) voucherSelect.value = bestVoucher['Mã'];
             } else {
-                // Nếu không có mã nào phù hợp, để ô chọn về mặc định (trống)
                 appliedVoucher = null;
                 if (voucherSelect) voucherSelect.value = '';
             }
         }
 
+        // --- CROSS-TAB SYNC ---
+        window.addEventListener('storage', function (e) {
+            if (e.key === 'knotty_cart') {
+                cart = JSON.parse(e.newValue) || [];
+                updateCartUI();
+            }
+        });
+
+        // --- DROPDOWN MENU ---
+        function toggleDropdown(event) {
+            event.preventDefault();
+            const dropdownMenu = document.getElementById('giftDropdown');
+            const dropdownParent = dropdownMenu.closest('.dropdown');
+
+            dropdownMenu.classList.toggle('show');
+            dropdownParent.classList.toggle('active');
+
+            if (dropdownMenu.classList.contains('show')) {
+                document.body.classList.add('no-scroll');
+            } else {
+                if (!document.body.classList.contains('menu-open')) {
+                    document.body.classList.remove('no-scroll');
+                }
+            }
+
+            document.addEventListener('click', function closeClickOutside(e) {
+                if (!dropdownParent.contains(e.target)) {
+                    dropdownMenu.classList.remove('show');
+                    dropdownParent.classList.remove('active');
+
+                    if (!document.body.classList.contains('menu-open')) {
+                        document.body.classList.remove('no-scroll');
+                    }
+
+                    document.removeEventListener('click', closeClickOutside);
+                }
+            });
+        }
     </script>
 </body>
 
