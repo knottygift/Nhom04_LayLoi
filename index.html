@@ -1234,7 +1234,7 @@
         <li><a href="#dichvu" onclick="closeMenu()">Dịch vụ</a></li>
 
         <li class="dropdown">
-            <a href="quatang_new.html" class="dropbtn" onclick="toggleDropdown(event)">
+            <a href="quatang.html" class="dropbtn" onclick="toggleDropdown(event)">
                 Quà tặng
                 <svg class="arrow" viewBox="0 0 24 24">
                     <path d="M6 9L12 15L18 9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
@@ -1245,37 +1245,37 @@
                 <div class="dropdown-section">
                     <h4>Cá nhân</h4>
                     <ul>
-                        <li><a href="quatang_new.html?filter=ongba_chame" onclick="closeMenu()">Ông bà, Cha mẹ</a></li>
-                        <li><a href="quatang_new.html?filter=vo_chong_nguoiyeu" onclick="closeMenu()">Vợ chồng, Người
+                        <li><a href="quatang.html?filter=ongba_chame" onclick="closeMenu()">Ông bà, Cha mẹ</a></li>
+                        <li><a href="quatang.html?filter=vo_chong_nguoiyeu" onclick="closeMenu()">Vợ chồng, Người
                                 yêu</a></li>
-                        <li><a href="quatang_new.html?filter=sinhnhat" onclick="closeMenu()">Sinh nhật</a></li>
-                        <li><a href="quatang_new.html?filter=banbe_dongnghiep" onclick="closeMenu()">Bạn bè, Đồng
+                        <li><a href="quatang.html?filter=sinhnhat" onclick="closeMenu()">Sinh nhật</a></li>
+                        <li><a href="quatang.html?filter=banbe_dongnghiep" onclick="closeMenu()">Bạn bè, Đồng
                                 nghiệp</a>
                         </li>
-                        <li><a href="quatang_new.html?filter=cuoi_tangia" onclick="closeMenu()">Quà Cưới, Tân gia</a>
+                        <li><a href="quatang.html?filter=cuoi_tangia" onclick="closeMenu()">Quà Cưới, Tân gia</a>
                         </li>
-                        <li><a href="quatang_new.html?filter=khac_canhan" onclick="closeMenu()">Khác</a></li>
+                        <li><a href="quatang.html?filter=khac_canhan" onclick="closeMenu()">Khác</a></li>
                     </ul>
                 </div>
                 <div class="dropdown-section">
                     <h4>Quà theo mùa</h4>
                     <ul>
-                        <li><a href="quatang_new.html?filter=tet" onclick="closeMenu()">Tết</a></li>
-                        <li><a href="quatang_new.html?filter=valentine" onclick="closeMenu()">Valentine</a></li>
-                        <li><a href="quatang_new.html?filter=trungthu" onclick="closeMenu()">Trung thu</a></li>
-                        <li><a href="quatang_new.html?filter=phu_nu" onclick="closeMenu()">Nâng niu phái đẹp</a></li>
-                        <li><a href="quatang_new.html?filter=m19_11" onclick="closeMenu()">Ngày của nam giới</a></li>
-                        <li><a href="quatang_new.html?filter=m20_11" onclick="closeMenu()">Tri ân thầy cô</a></li>
-                        <li><a href="quatang_new.html?filter=giangsinh" onclick="closeMenu()">Giáng Sinh</a></li>
+                        <li><a href="quatang.html?filter=tet" onclick="closeMenu()">Tết</a></li>
+                        <li><a href="quatang.html?filter=valentine" onclick="closeMenu()">Valentine</a></li>
+                        <li><a href="quatang.html?filter=trungthu" onclick="closeMenu()">Trung thu</a></li>
+                        <li><a href="quatang.html?filter=phu_nu" onclick="closeMenu()">Nâng niu phái đẹp</a></li>
+                        <li><a href="quatang.html?filter=m19_11" onclick="closeMenu()">Ngày của nam giới</a></li>
+                        <li><a href="quatang.html?filter=m20_11" onclick="closeMenu()">Tri ân thầy cô</a></li>
+                        <li><a href="quatang.html?filter=giangsinh" onclick="closeMenu()">Giáng Sinh</a></li>
                     </ul>
                 </div>
                 <div class="dropdown-section">
                     <h4>Đặt thiết kế</h4>
                     <ul>
-                        <li><a href="quatang_new.html?filter=canhanhoa" onclick="closeMenu()">Đặt quà cá nhân hóa</a>
+                        <li><a href="quatang.html?filter=canhanhoa" onclick="closeMenu()">Đặt quà cá nhân hóa</a>
                         </li>
-                        <li><a href="quatang_new.html?filter=soluonglon" onclick="closeMenu()">Đặt số lượng lớn</a></li>
-                        <li><a href="quatang_new.html?filter=khac_thietke" onclick="closeMenu()">Khác</a></li>
+                        <li><a href="quatang.html?filter=soluonglon" onclick="closeMenu()">Đặt số lượng lớn</a></li>
+                        <li><a href="quatang.html?filter=khac_thietke" onclick="closeMenu()">Khác</a></li>
                     </ul>
                 </div>
             </div>
@@ -1341,7 +1341,7 @@
         </div>
 
         <div style="text-align: center; margin-top: 40px;">
-            <a href="quatang_new.html" class="btn"
+            <a href="quatang.html" class="btn"
                 style="padding: 12px 40px; font-size: 1.1rem; border-radius: 25px; box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);">
                 Xem toàn bộ quà tặng &rarr;
             </a>
@@ -1643,7 +1643,7 @@
         function executeSearch() {
             const keyword = document.getElementById('main-search-input').value.trim();
             if (keyword !== "") {
-                window.location.href = `quatang_new.html?search=${encodeURIComponent(keyword)}`;
+                window.location.href = `quatang.html?search=${encodeURIComponent(keyword)}`;
             }
         }
 
@@ -2390,7 +2390,7 @@
                     confirmButtonText: "Đi mua sắm"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        window.location.href = 'quatang_new.html';
+                        window.location.href = 'quatang.html';
                     }
                 });
                 return;
