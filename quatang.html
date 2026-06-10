@@ -168,9 +168,12 @@
         /* --- NÚT TÀI KHOẢN VÀ MENU DROPDOWN MƯỢT MÀ --- */
         .auth-dropdown {
             position: absolute;
-            top: 55px;
-            /* Đẩy lên 1 chút để tạo hiệu ứng trượt */
-            right: 80px;
+            top: 100%;
+            /* Rơi xuống ngay sát mép dưới của nút */
+            right: 0;
+            /* Căn thẳng tắp lề phải với nút Đăng nhập */
+            margin-top: 10px;
+            /* Tạo khoảng cách mượt mà với nút */
             background: white;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             border-radius: 8px;
@@ -967,12 +970,15 @@
                 </div>
                 <a id="cart-menu-btn">🛒 <span class="cart-text">Giỏ hàng</span><span id="cart-count"
                         style="display: none;">0</span></a>
-                <a id="auth-menu-btn" onclick="toggleAuth()">👤 <span class="auth-text" id="auth-label">Đăng
-                        nhập</span></a>
-                <div id="auth-dropdown" class="auth-dropdown">
-                    <a onclick="openOrderHistoryModal()">📦 Đơn hàng đã đặt</a>
-                    <a onclick="openChangePasswordModal()">🔑 Đổi mật khẩu</a>
-                    <a onclick="logout()">🚪 Đăng xuất</a>
+                <div style="position: relative; display: flex; align-items: center;">
+                    <a id="auth-menu-btn" onclick="toggleAuth()">👤 <span class="auth-text" id="auth-label">Đăng
+                            nhập</span></a>
+                    <div id="auth-dropdown" class="auth-dropdown">
+                        <a onclick="openOrderHistoryModal()">📦 Đơn hàng đã đặt</a>
+                        <a onclick="openEditProfileModal()">📝 Chỉnh sửa thông tin</a>
+                        <a onclick="openChangePasswordModal()">🔑 Đổi mật khẩu</a>
+                        <a onclick="logout()">🚪 Đăng xuất</a>
+                    </div>
                 </div>
                 <a href="index.html" class="back-home">← Quay lại</a>
             </div>
@@ -1236,6 +1242,28 @@
                     </p>
                 </form>
             </div>
+        </div>
+    </div>
+
+    <div id="edit-profile-modal" class="modal">
+        <div class="modal-content" style="max-width: 400px;">
+            <span class="close-btn" onclick="closeEditProfileModal()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Chỉnh Sửa Thông Tin</h2>
+            <form onsubmit="handleUpdateProfileSubmit(event)">
+                <div class="form-group">
+                    <label>Họ và tên</label>
+                    <input type="text" id="edit-profile-name" required>
+                </div>
+                <div class="form-group">
+                    <label>Số điện thoại</label>
+                    <input type="tel" id="edit-profile-phone" required>
+                </div>
+                <div class="form-group">
+                    <label>Email liên hệ</label>
+                    <input type="email" id="edit-profile-email" required>
+                </div>
+                <button type="submit" class="btn checkout-btn">Lưu thay đổi</button>
+            </form>
         </div>
     </div>
 
@@ -1862,10 +1890,64 @@
         }
 
         // ===================================
-        // NÂNG CẤP TÀI KHOẢN (ĐỔI PASS, LỊCH SỬ ĐƠN)
+        // NÂNG CẤP TÀI KHOẢN (ĐỔI PASS, THÔNG TIN, LỊCH SỬ ĐƠN)
         // ===================================
 
         let loadedOrders = []; // Lưu tạm danh sách đơn hàng để xem chi tiết
+
+        // --- MỞ/ĐÓNG MODAL CHỈNH SỬA THÔNG TIN ---
+        function openEditProfileModal() {
+            document.getElementById('auth-dropdown').classList.remove('active'); // Đóng menu thả xuống
+            if (!currentUser) return;
+
+            // Tự động điền thông tin cũ vào ô
+            // Tự động điền thông tin cũ vào ô
+            document.getElementById('edit-profile-name').value = currentUser.name || '';
+            document.getElementById('edit-profile-phone').value = currentUser.phone || '';
+            document.getElementById('edit-profile-email').value = currentUser.email || '';
+
+            document.getElementById('edit-profile-modal').style.display = "block";
+            document.body.classList.add('no-scroll');
+        }
+
+        function closeEditProfileModal() {
+            document.getElementById('edit-profile-modal').style.display = "none";
+            document.body.classList.remove('no-scroll');
+        }
+
+        async function handleUpdateProfileSubmit(e) {
+            e.preventDefault();
+            const newName = document.getElementById('edit-profile-name').value.trim();
+            const newPhone = document.getElementById('edit-profile-phone').value.trim();
+            const newEmail = document.getElementById('edit-profile-email').value.trim();
+
+            Swal.fire({ title: 'Đang lưu thay đổi...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+
+            try {
+                const res = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ action: 'updateProfile', id: currentUser.id, email: newEmail, name: newName, phone: newPhone })
+                });
+                const data = await res.json();
+
+                if (data.result === 'success') {
+                    // Cập nhật lại bộ nhớ trên máy khách
+                    currentUser.name = newName;
+                    currentUser.phone = newPhone;
+                    currentUser.email = newEmail;
+                    localStorage.setItem('knotty_user', JSON.stringify(currentUser));
+
+                    checkLoginStatus(); 
+                    closeEditProfileModal();
+                    Swal.fire('Thành công', data.message, 'success');
+                } else {
+                    Swal.fire('Thất bại', data.message, 'error');
+                }
+            } catch (err) {
+                Swal.fire('Lỗi kết nối', 'Vui lòng thử lại.', 'error');
+            }
+        }
 
         // --- MỞ/ĐÓNG MODAL ĐỔI MẬT KHẨU ---
         function openChangePasswordModal() {
@@ -1946,7 +2028,7 @@
                                     <span class="history-status ${statusClass}">${order.status}</span>
                                 </div>
                                 <div style="color: #555; font-size: 0.9rem; margin-bottom: 5px;">📅 Ngày: ${dateStr}</div>
-                                <div style="color: #d4af37; font-weight:bold;">💰 Tổng: ${escapeHtml(order.total)}</div>
+                                <div style="color: #d4af37; font-weight:bold;">💰 Tổng: ${escapeHtml(order.total.split(' (')[0])}</div>
                                 <div style="color: #777; font-size: 0.8rem; margin-top: 5px; font-style:italic;">(Nhấn để xem chi tiết hóa đơn)</div>
                             </div>
                         `;
@@ -1977,22 +2059,28 @@
             });
             itemsHtml += '</ul>';
 
+            // Chuẩn bị html để hiện Voucher
+            let voucherDisplay = order.voucher && order.voucher !== "Không có" && order.voucher !== "" 
+                ? `<p><strong>Voucher áp dụng:</strong> <span style="color: #2ecc71; font-weight: bold;">${escapeHtml(order.voucher)}</span></p>` 
+                : `<p><strong>Voucher áp dụng:</strong> Không có</p>`;
+
             const html = `
                 <div style="text-align:center; margin-bottom: 15px; border-bottom: 2px dashed #ccc; padding-bottom:10px;">
                     <h3 style="margin:0;">KNOTTY</h3>
-                    <p style="margin:5px 0 0 0; color:#777; font-size:0.9rem;">Mã hóa đơn: ${order.invoiceId}</p>
+                    <p style="margin:5px 0 0 0; color:#777; font-size:0.9rem;">Mã hóa đơn: <strong>${escapeHtml(order.invoiceId || 'Chưa cập nhật')}</strong></p>
                     <p style="margin:0; color:#777; font-size:0.9rem;">Ngày đặt: ${dateStr}</p>
                 </div>
                 <p><strong>Người nhận:</strong> ${order.name}</p>
                 <p><strong>Điện thoại:</strong> ${order.phone}</p>
                 <p><strong>Địa chỉ:</strong> ${order.address}</p>
+                ${voucherDisplay}
                 <p><strong>Ghi chú:</strong> ${order.note || "Không"}</p>
                 <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
                 <p><strong>SẢN PHẨM:</strong></p>
                 ${itemsHtml}
                 <hr style="border: 0; border-top: 1px solid #ddd; margin: 15px 0;">
                 <div style="text-align: right; font-size: 1.2rem; color: #d4af37;">
-                    <strong>TỔNG TIỀN: ${escapeHtml(order.total)}</strong>
+                    <strong>TỔNG TIỀN: ${escapeHtml(order.total.split(' (')[0])}</strong>
                 </div>
             `;
 
@@ -2162,6 +2250,7 @@
         function removeItem(index) { cart.splice(index, 1); updateCartUI(); }
 
         function checkout() {
+            // 1. Giữ nguyên kiểm tra giỏ hàng trống
             if (cart.length === 0) {
                 closeCartModal();
                 Swal.fire({
@@ -2170,9 +2259,37 @@
                     icon: "warning",
                     confirmButtonColor: "#d4af37",
                     confirmButtonText: "Tiếp tục mua sắm"
+                }).then((result) => {
+                    if (result.isConfirmed && window.location.pathname.indexOf('quatang.html') === -1) {
+                        window.location.href = 'quatang.html';
+                    }
                 });
                 return;
             }
+
+            // 2. THÊM MỚI: Chặn khách vãng lai và yêu cầu đăng nhập
+            if (!currentUser) {
+                closeCartModal(); // Đóng popup giỏ hàng để tránh rối mắt
+                Swal.fire({
+                    title: "Yêu cầu đăng nhập",
+                    text: "Vui lòng đăng nhập hoặc đăng ký tài khoản để tiếp tục đặt hàng. Giỏ hàng của bạn sẽ được giữ nguyên!",
+                    icon: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#d4af37",
+                    cancelButtonColor: "#95a5a6",
+                    confirmButtonText: "Đăng nhập ngay",
+                    cancelButtonText: "Để sau"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // Gọi trực tiếp code mở Modal Auth của bạn
+                        document.getElementById('auth-modal').style.display = "block";
+                        document.body.classList.add('no-scroll');
+                    }
+                });
+                return; // Quan trọng: Kết thúc hàm tại đây, không cho mở Modal thông tin nhận hàng
+            }
+
+            // 3. Nếu đã đăng nhập, tự động điền thông tin và mở form thanh toán
             if (currentUser) {
                 document.getElementById('order-name').value = currentUser.name || "";
                 document.getElementById('order-phone').value = currentUser.phone || "";
@@ -2270,7 +2387,8 @@
                         note,
                         voucherCode: appliedVoucher ? appliedVoucher.code : null,
                         clientId: getClientId(),
-                        userPhone: currentUser ? currentUser.phone : null
+                        userPhone: currentUser ? currentUser.phone : null,
+                        userId: currentUser ? currentUser.id : null // Gửi kèm ID để khóa Voucher chặn gian lận
                     })
                 });
 
