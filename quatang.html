@@ -168,25 +168,38 @@
         /* --- NÚT TÀI KHOẢN VÀ MENU DROPDOWN MƯỢT MÀ --- */
         .auth-dropdown {
             position: absolute;
-            top: 100%;
-            /* Rơi xuống ngay sát mép dưới của nút */
-            right: 0;
-            /* Căn thẳng tắp lề phải với nút Đăng nhập */
-            margin-top: 10px;
-            /* Tạo khoảng cách mượt mà với nút */
-            background: white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 8px 0;
+            top: calc(100% + 15px);
+            right: -5px;
+            /* Căn thẳng hàng, dịch nhẹ để cân đối với nút */
+            background: #ffffff;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            padding: 10px 0;
             display: flex;
             flex-direction: column;
-            min-width: 180px;
+            min-width: 220px;
             z-index: 2000;
-            /* Hiệu ứng chuyển động */
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
+            transform: translateY(-15px);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #eaebed;
+        }
+
+        /* Thêm mũi tên (caret) trỏ lên nút để menu trông chuyên nghiệp và liền mạch hơn */
+        .auth-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            right: 20px;
+            /* Định vị mũi tên chỉ đúng vào nút */
+            width: 14px;
+            height: 14px;
+            background: #ffffff;
+            transform: rotate(45deg);
+            border-top: 1px solid #eaebed;
+            border-left: 1px solid #eaebed;
+            z-index: 1;
         }
 
         .auth-dropdown.active {
@@ -196,16 +209,20 @@
         }
 
         .auth-dropdown a {
+            position: relative;
+            z-index: 2;
+            /* Đảm bảo chữ nằm trên mũi tên nếu có đè */
             padding: 12px 20px;
-            color: #333;
+            color: #4a5568;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             cursor: pointer;
             font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #f0f0f0;
+            gap: 12px;
+            border-bottom: 1px solid #f8f9fa;
+            font-weight: 500;
         }
 
         .auth-dropdown a:last-child {
@@ -213,11 +230,11 @@
         }
 
         .auth-dropdown a:hover {
-            background: #fdfbf5;
+            background: #fffdf5;
             color: #d4af37;
-            padding-left: 25px;
-            /* Hiệu ứng trượt nhẹ text sang phải khi hover */
-            font-weight: bold;
+            padding-left: 26px;
+            /* Hiệu ứng trượt mượt mà hơn */
+            font-weight: 600;
         }
 
         /* CSS cho List Đơn hàng */
@@ -1341,7 +1358,7 @@
         // SECURITY CONFIGURATION & UTILITIES
         // ===================================
 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgmj4HQP-uciGgg6eKwjumbuCAP5HlznGtcLJ4v0-JkI2GQvW2eHdQga9MBc13H1rtAA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOjzwhI7vqo7AQlnJ4l_fIJGHOLwNHAxkUnmithznPu-pvuvQjuhuxM7uDZ58ZIoI9/exec";
         let isManualVoucher = false;
 
         /**
@@ -1848,21 +1865,13 @@
                     currentUser = data.user;
                     localStorage.setItem('knotty_user', JSON.stringify(currentUser));
 
-                    // Tối ưu gộp giỏ hàng: 
-                    // Nếu khách vãng lai đã thêm đồ vào giỏ, giữ nguyên đồ đó và đẩy lên mây.
-                    // Nếu khách chưa thêm gì, mới kéo giỏ hàng từ mây về máy.
-                    if (currentUser.cart && currentUser.cart.length > 0) {
-                        if (cart.length === 0) {
-                            cart = currentUser.cart; // Kéo từ mây về
-                        } else {
-                            syncCartToCloud(); // Đẩy đồ hiện tại lên mây
-                        }
-                        localStorage.setItem('knotty_cart', JSON.stringify(cart));
-                        updateCartUI();
-                    } else if (cart.length > 0) {
-                        // Nếu mây không có gì nhưng máy đang có, đẩy lên mây
-                        syncCartToCloud();
+                    // SỬA THEO YÊU CẦU: Xóa toàn bộ sản phẩm trong giỏ hàng local, gọi sản phẩm từ Sheet
+                    cart = [];
+                    if (currentUser.cart && Array.isArray(currentUser.cart)) {
+                        cart = currentUser.cart;
                     }
+                    localStorage.setItem('knotty_cart', JSON.stringify(cart));
+                    updateCartUI();
 
                     checkLoginStatus();
                     closeAuthModal();
