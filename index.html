@@ -216,25 +216,38 @@
         /* --- NÚT TÀI KHOẢN VÀ MENU DROPDOWN MƯỢT MÀ --- */
         .auth-dropdown {
             position: absolute;
-            top: 100%;
-            /* Rơi xuống ngay sát mép dưới của nút */
-            right: 0;
-            /* Căn thẳng tắp lề phải với nút Đăng nhập */
-            margin-top: 10px;
-            /* Tạo khoảng cách mượt mà với nút */
-            background: white;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-            border-radius: 8px;
-            padding: 8px 0;
+            top: calc(100% + 15px);
+            right: -5px;
+            /* Căn thẳng hàng, dịch nhẹ để cân đối với nút */
+            background: #ffffff;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+            border-radius: 12px;
+            padding: 10px 0;
             display: flex;
             flex-direction: column;
-            min-width: 180px;
+            min-width: 220px;
             z-index: 2000;
-            /* Hiệu ứng chuyển động */
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
+            transform: translateY(-15px);
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #eaebed;
+        }
+
+        /* Thêm mũi tên (caret) trỏ lên nút để menu trông chuyên nghiệp và liền mạch hơn */
+        .auth-dropdown::before {
+            content: '';
+            position: absolute;
+            top: -7px;
+            right: 20px;
+            /* Định vị mũi tên chỉ đúng vào nút */
+            width: 14px;
+            height: 14px;
+            background: #ffffff;
+            transform: rotate(45deg);
+            border-top: 1px solid #eaebed;
+            border-left: 1px solid #eaebed;
+            z-index: 1;
         }
 
         .auth-dropdown.active {
@@ -244,16 +257,20 @@
         }
 
         .auth-dropdown a {
+            position: relative;
+            z-index: 2;
+            /* Đảm bảo chữ nằm trên mũi tên nếu có đè */
             padding: 12px 20px;
-            color: #333;
+            color: #4a5568;
             text-decoration: none;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             cursor: pointer;
             font-size: 0.95rem;
             display: flex;
             align-items: center;
-            gap: 10px;
-            border-bottom: 1px solid #f0f0f0;
+            gap: 12px;
+            border-bottom: 1px solid #f8f9fa;
+            font-weight: 500;
         }
 
         .auth-dropdown a:last-child {
@@ -261,11 +278,11 @@
         }
 
         .auth-dropdown a:hover {
-            background: #fdfbf5;
+            background: #fffdf5;
             color: #d4af37;
-            padding-left: 25px;
-            /* Hiệu ứng trượt nhẹ text sang phải khi hover */
-            font-weight: bold;
+            padding-left: 26px;
+            /* Hiệu ứng trượt mượt mà hơn */
+            font-weight: 600;
         }
 
         /* CSS cho List Đơn hàng */
@@ -1431,6 +1448,7 @@
                 </div>
             </div>
         </li>
+        <li><a href="#danhgia" onclick="closeMenu()">Đánh giá</a></li>
         <li><a href="javascript:void(0)" onclick="closeMenu(); openContactModal()">Liên hệ</a></li>
     </ul>
 
@@ -1487,9 +1505,9 @@
                     hiệu doanh nghiệp.</p>
             </div>
             <div class="service-card">
-                <h3>Cung Cấp Số Lượng Lớn</h3>
-                <p>Giải pháp quà tặng trọn gói cho sự kiện, hội nghị, tri ân khách hàng với chất lượng cao và tiến độ
-                    đảm bảo.</p>
+                <h3>Quà tặng đa dạng</h3>
+                <p>Khám phá vô vàn ý tưởng quà tặng độc đáo, phù hợp cho mọi sự kiện, giúp bạn dễ dàng gửi trao sự quan
+                    tâm và tạo dấu ấn đặc biệt.</p>
             </div>
         </div>
     </section>
@@ -1509,25 +1527,41 @@
     </section>
 
     <section id="danhgia" class="section">
-        <h2 class="section-title">Đánh Giá Của Khách Hàng</h2>
-        <div class="reviews-container">
-            <div class="review-header-flex">
-                <div class="review-filters" id="review-filters">
-                    <button class="btn-filter-star active" onclick="filterReviews('all', this)">Tất cả</button>
-                    <button class="btn-filter-star" onclick="filterReviews(5, this)">5 Sao ⭐</button>
-                    <button class="btn-filter-star" onclick="filterReviews(4, this)">4 Sao ⭐</button>
-                    <button class="btn-filter-star" onclick="filterReviews(3, this)">3 Sao ⭐</button>
-                    <button class="btn-filter-star" onclick="filterReviews(2, this)">2 Sao ⭐</button>
-                    <button class="btn-filter-star" onclick="filterReviews(1, this)">1 Sao ⭐</button>
-                </div>
-                <button class="btn" style="padding: 10px 20px; font-size: 0.95rem;" onclick="openReviewModal()">Viết
-                    đánh giá</button>
-            </div>
+        <div class="container">
+            <h2 class="section-title">Đánh giá từ khách hàng</h2>
+
             <div class="reviews-grid" id="reviews-display-container">
                 <p style="text-align: center; color: #999; grid-column: 1/-1;">Đang tải đánh giá...</p>
             </div>
+
+            <div
+                style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                <button class="btn" style="padding: 10px 30px; font-size: 1rem; border-radius: 25px;"
+                    onclick="openAllReviewsModal()">Xem toàn bộ đánh giá</button>
+                <button class="btn" style="padding: 10px 30px; font-size: 1rem; border-radius: 25px;"
+                    onclick="openReviewModal()">Viết đánh giá</button>
+            </div>
         </div>
     </section>
+
+    <div id="all-reviews-modal" class="modal">
+        <div class="modal-content" style="max-width: 900px; width: 95%;">
+            <span class="close-btn" onclick="closeAllReviewsModal()">&times;</span>
+            <h2 style="margin-bottom: 20px; color: #d4af37; text-align: center;">Toàn bộ đánh giá</h2>
+
+            <div class="review-filters" id="modal-review-filters" style="justify-content: center; margin-bottom: 25px;">
+                <button class="btn-filter-star active" onclick="filterAllReviews('all', this)">Tất cả</button>
+                <button class="btn-filter-star" onclick="filterAllReviews(5, this)">5 Sao ⭐</button>
+                <button class="btn-filter-star" onclick="filterAllReviews(4, this)">4 Sao ⭐</button>
+                <button class="btn-filter-star" onclick="filterAllReviews(3, this)">3 Sao ⭐</button>
+                <button class="btn-filter-star" onclick="filterAllReviews(2, this)">2 Sao ⭐</button>
+                <button class="btn-filter-star" onclick="filterAllReviews(1, this)">1 Sao ⭐</button>
+            </div>
+
+            <div class="reviews-grid" id="all-reviews-display-container" style="max-height: 60vh;">
+            </div>
+        </div>
+    </div>
 
     <div id="cart-modal" class="modal">
         <div class="modal-content">
@@ -1823,7 +1857,7 @@
         // SECURITY CONFIGURATION
         // ===================================
 
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzgmj4HQP-uciGgg6eKwjumbuCAP5HlznGtcLJ4v0-JkI2GQvW2eHdQga9MBc13H1rtAA/exec";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOjzwhI7vqo7AQlnJ4l_fIJGHOLwNHAxkUnmithznPu-pvuvQjuhuxM7uDZ58ZIoI9/exec";
 
         // ✅ FIX: Generate secure session tokens
         let sessionToken = null;
@@ -2238,21 +2272,13 @@
                     currentUser = data.user;
                     localStorage.setItem('knotty_user', JSON.stringify(currentUser));
 
-                    // Tối ưu gộp giỏ hàng: 
-                    // Nếu khách vãng lai đã thêm đồ vào giỏ, giữ nguyên đồ đó và đẩy lên mây.
-                    // Nếu khách chưa thêm gì, mới kéo giỏ hàng từ mây về máy.
-                    if (currentUser.cart && currentUser.cart.length > 0) {
-                        if (cart.length === 0) {
-                            cart = currentUser.cart; // Kéo từ mây về
-                        } else {
-                            syncCartToCloud(); // Đẩy đồ hiện tại lên mây
-                        }
-                        localStorage.setItem('knotty_cart', JSON.stringify(cart));
-                        updateCartUI();
-                    } else if (cart.length > 0) {
-                        // Nếu mây không có gì nhưng máy đang có, đẩy lên mây
-                        syncCartToCloud();
+                    // SỬA THEO YÊU CẦU: Xóa toàn bộ sản phẩm trong giỏ hàng local, gọi sản phẩm từ Sheet
+                    cart = [];
+                    if (currentUser.cart && Array.isArray(currentUser.cart)) {
+                        cart = currentUser.cart;
                     }
+                    localStorage.setItem('knotty_cart', JSON.stringify(cart));
+                    updateCartUI();
 
                     checkLoginStatus();
                     closeAuthModal();
@@ -3195,16 +3221,20 @@
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL + "?action=getReviews&clientId=" + getClientId());
                 allReviews = await response.json();
-                renderReviewsList(allReviews);
+                // SỬA: Chỉ lấy 12 bài mới nhất cho trang chủ
+                renderReviewsList(allReviews.slice(0, 12), 'reviews-display-container');
             } catch (error) {
                 container.innerHTML = "<p style='text-align: center; color: red; grid-column: 1/-1;'>Không thể tải đánh giá lúc này.</p>";
             }
         }
 
-        function renderReviewsList(list) {
-            const container = document.getElementById('reviews-display-container');
+        // SỬA: Truyền thêm ID để biết đang vẽ HTML vào trang chủ hay vào Modal
+        function renderReviewsList(list, containerId = 'reviews-display-container') {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
             if (!list || list.length === 0) {
-                container.innerHTML = "<p style='text-align: center; color: #999; grid-column: 1/-1; padding: 30px;'>Chưa có đánh giá nào. Hãy là người đầu tiên đánh giá nhé!</p>";
+                container.innerHTML = "<p style='text-align: center; color: #999; grid-column: 1/-1; padding: 30px;'>Chưa có đánh giá nào phù hợp.</p>";
                 return;
             }
 
@@ -3230,14 +3260,33 @@
             container.innerHTML = html;
         }
 
-        function filterReviews(stars, btn) {
-            document.querySelectorAll('.btn-filter-star').forEach(b => b.classList.remove('active'));
+        // THÊM MỚI: Hàm mở Modal toàn bộ đánh giá
+        function openAllReviewsModal() {
+            document.getElementById('all-reviews-modal').style.display = "block";
+            document.body.classList.add('no-scroll');
+
+            // Reset bộ lọc trong modal
+            document.querySelectorAll('#modal-review-filters .btn-filter-star').forEach(b => b.classList.remove('active'));
+            document.querySelector('#modal-review-filters .btn-filter-star').classList.add('active');
+
+            // Đổ toàn bộ dữ liệu vào container của modal
+            renderReviewsList(allReviews, 'all-reviews-display-container');
+        }
+
+        function closeAllReviewsModal() {
+            document.getElementById('all-reviews-modal').style.display = "none";
+            document.body.classList.remove('no-scroll');
+        }
+
+        // THÊM MỚI: Hàm lọc đánh giá dùng riêng cho Modal
+        function filterAllReviews(stars, btn) {
+            document.querySelectorAll('#modal-review-filters .btn-filter-star').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
             if (stars === 'all') {
-                renderReviewsList(allReviews);
+                renderReviewsList(allReviews, 'all-reviews-display-container');
             } else {
-                renderReviewsList(allReviews.filter(r => parseInt(r['Số sao']) === stars));
+                renderReviewsList(allReviews.filter(r => parseInt(r['Số sao']) === stars), 'all-reviews-display-container');
             }
         }
 
@@ -3268,6 +3317,7 @@
         // Đóng modal khi click ra ngoài
         window.addEventListener('click', function (event) {
             if (event.target == reviewModal) closeReviewModal();
+            if (event.target == document.getElementById('all-reviews-modal')) closeAllReviewsModal();
         });
 
         function selectStars(count) {
