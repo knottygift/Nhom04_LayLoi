@@ -1310,7 +1310,8 @@
 
         .reviews-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            /* Sử dụng min(100%, 300px) để tự động co bóp không gây tràn lề trên màn hình nhỏ */
+            grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
             gap: 20px;
             max-height: 600px;
             overflow-y: auto;
@@ -1384,6 +1385,27 @@
         .star-rating-input span.active,
         .star-rating-input span:hover {
             color: #f1c40f;
+        }
+
+        /* --- CSS CHO CỤM NÚT ĐÁNH GIÁ --- */
+        .review-action-btns {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            /* Tự động xếp chồng nếu màn hình điện thoại hẹp */
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .review-action-btns .btn {
+            padding: 10px 20px;
+            width: 230px;
+            /* Đặt chiều rộng cố định vừa đủ cho cả 2 nút */
+            max-width: 90vw;
+            /* Đề phòng màn hình quá bé (như đồng hồ thông minh) */
+            text-align: center;
+            border-radius: 25px;
+            /* Nếu trong HTML đã có thì có thể bỏ dòng này */
         }
     </style>
 </head>
@@ -1486,7 +1508,8 @@
 
     <section id="trangchu" class="hero">
         <h1>Trao Gửi Yêu Thương Qua Từng Thiết Kế</h1>
-        <p>Chúng tôi chuyên tư vấn, thiết kế độc quyền và cung cấp các giải pháp quà tặng tinh tế, ý nghĩa để những món quà giúp bạn gửi gắm, lan tỏa thông điệp tốt đẹp tới người nhận.</p>
+        <p>Chúng tôi chuyên tư vấn, thiết kế độc quyền và cung cấp các giải pháp quà tặng tinh tế, ý nghĩa để những món
+            quà giúp bạn gửi gắm, lan tỏa thông điệp tốt đẹp tới người nhận.</p>
         <a href="#quatang" class="btn">Khám phá ngay</a>
     </section>
 
@@ -1533,12 +1556,10 @@
                 <p style="text-align: center; color: #999; grid-column: 1/-1;">Đang tải đánh giá...</p>
             </div>
 
-            <div
-                style="text-align: center; margin-top: 30px; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                <button class="btn" style="padding: 10px 30px; font-size: 1rem; border-radius: 25px;"
-                    onclick="openAllReviewsModal()">Xem toàn bộ đánh giá</button>
-                <button class="btn" style="padding: 10px 30px; font-size: 1rem; border-radius: 25px;"
-                    onclick="openReviewModal()">Viết đánh giá</button>
+            <div class="review-action-btns">
+                <button class="btn" style="border-radius: 25px;" onclick="openAllReviewsModal()">Xem toàn bộ đánh
+                    giá</button>
+                <button class="btn" style="border-radius: 25px;" onclick="openReviewModal()">Viết đánh giá</button>
             </div>
         </div>
     </section>
