@@ -1407,6 +1407,28 @@
             border-radius: 25px;
             /* Nếu trong HTML đã có thì có thể bỏ dòng này */
         }
+
+        /* --- SỬA LỖI THANH LỌC ĐÁNH GIÁ --- */
+        #modal-review-filters {
+            justify-content: center;
+            /* Vẫn căn giữa trên màn hình PC */
+            margin-bottom: 25px;
+        }
+
+        .btn-filter-star {
+            flex-shrink: 0;
+            /* Ép các nút giữ nguyên hình dáng, không bị móp méo khi đưa lên mobile */
+        }
+
+        @media (max-width: 768px) {
+            #modal-review-filters {
+                /* Bắt buộc căn trái trên Mobile để không bị lấp nút đầu tiên */
+                justify-content: flex-start;
+                padding-left: 2px;
+                padding-right: 15px;
+                /* Tạo không gian để khi vuốt đến cuối không bị sát viền */
+            }
+        }
     </style>
 </head>
 
@@ -1569,7 +1591,7 @@
             <span class="close-btn" onclick="closeAllReviewsModal()">&times;</span>
             <h2 style="margin-bottom: 20px; color: #d4af37; text-align: center;">Toàn bộ đánh giá</h2>
 
-            <div class="review-filters" id="modal-review-filters" style="justify-content: center; margin-bottom: 25px;">
+            <div class="review-filters" id="modal-review-filters">
                 <button class="btn-filter-star active" onclick="filterAllReviews('all', this)">Tất cả</button>
                 <button class="btn-filter-star" onclick="filterAllReviews(5, this)">5 Sao ⭐</button>
                 <button class="btn-filter-star" onclick="filterAllReviews(4, this)">4 Sao ⭐</button>
