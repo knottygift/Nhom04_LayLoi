@@ -72,12 +72,13 @@
         }
 
         .nav-container {
-            max-width: 1200px;
+            max-width: 1440px;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px 50px;
+            gap: 25px;
         }
 
         .logo {
@@ -95,7 +96,7 @@
         .toolbar-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 25px;
         }
 
         /* --- CSS THANH TÌM KIẾM --- */
@@ -416,35 +417,99 @@
                 flex-shrink: 0;
             }
 
-            .nav-active-search .logo,
-            .nav-active-search .back-home,
-            .nav-active-search #cart-menu-btn {
-                max-width: 0 !important;
-                opacity: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border: none !important;
-                overflow: hidden !important;
+            /* ===== GIẢI PHÁP MƯỢT MÀ HOÀN HẢO (ÉP KHUNG FLEXBOX) ===== */
+
+            /* 1. Đảm bảo mọi thành phần co giãn mượt mà */
+            nav,
+            .nav-container,
+            .toolbar-right,
+            .logo,
+            .back-home,
+            #cart-menu-btn,
+            #auth-menu-btn,
+            .menu-toggle-btn,
+            .search-container,
+            .search-container input,
+            .search-btn {
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            }
+
+            /* 2. Khi kích hoạt, ép toàn bộ khoảng cách về 0 */
+            .nav-active-search {
+                gap: 0 !important;
             }
 
             .nav-active-search .toolbar-right {
                 gap: 0 !important;
+                width: 100% !important;
+                flex: 1 !important;
             }
 
-            .search-container.active {
-                background: #fff;
-                padding: 6px 15px;
-                border: 1px solid #d4af37;
-                border-radius: 20px;
-                box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
-                width: 100% !important;
+            /* 3. Thu nhỏ từ từ Logo và các nút về 0 (Ép khung) */
+            .nav-active-search .logo,
+            .nav-active-search .back-home,
+            .nav-active-search #cart-menu-btn,
+            .nav-active-search #auth-menu-btn,
+            .nav-active-search .menu-toggle-btn {
+                max-width: 0 !important;
+                width: 0 !important;
+                min-width: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                opacity: 0 !important;
+                border: none !important;
+                overflow: hidden !important;
+                white-space: nowrap !important;
+                pointer-events: none !important;
+            }
+
+            /* 4. Trạng thái bình thường của thanh tìm kiếm */
+            .search-container {
                 display: flex !important;
+                align-items: center;
+                width: 40px !important;
+                padding: 0 !important;
+                background: transparent !important;
+                border: 1px solid transparent !important;
+                border-radius: 50% !important;
+                overflow: hidden !important;
+                position: relative !important;
+                /* Ghi đè thiết lập cũ */
+                top: auto !important;
+                left: auto !important;
+                right: auto !important;
+                transform: none !important;
+            }
+
+            /* 5. Trạng thái MỞ của thanh tìm kiếm (Giãn ra hết cỡ) */
+            .search-container.active {
+                width: 100% !important;
+                max-width: 100% !important;
+                background: #fff !important;
+                padding: 6px 15px !important;
+                border: 1px solid #d4af37 !important;
+                border-radius: 25px !important;
+                box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15) !important;
+            }
+
+            /* 6. Xử lý Input text bên trong */
+            .search-container input {
+                width: 0 !important;
+                padding: 0 !important;
+                opacity: 0 !important;
+                font-size: 16px !important;
             }
 
             .search-container.active input {
                 width: 100% !important;
-                padding: 6px 5px;
-                opacity: 1;
+                padding: 6px 10px !important;
+                opacity: 1 !important;
+                color: #333 !important;
+            }
+
+            .search-container.active .search-btn {
+                background: transparent !important;
+                color: #d4af37 !important;
             }
 
             #cart-menu-btn {
@@ -755,13 +820,15 @@
         .modal-content {
             background-color: #fff;
             margin: auto;
-            padding: 30px;
-            border-radius: 10px;
+            /* Tăng padding-top để nút đóng không đè lên tiêu đề */
+            padding: 40px 30px 30px 30px;
+            border-radius: 15px;
+            /* Bo góc tròn hơn một chút cho hiện đại */
             width: 90%;
             max-width: 500px;
             position: relative;
             text-align: left;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             max-height: 90vh;
             max-height: 90dvh;
             overflow-y: auto;
@@ -775,17 +842,25 @@
 
         .close-btn {
             position: absolute;
-            right: 20px;
-            top: 20px;
-            font-size: 28px;
-            font-weight: bold;
+            /* Đẩy sát lên góc hơn */
+            right: 15px;
+            top: 10px;
+            font-size: 30px;
+            font-weight: 300;
+            /* Dùng font mỏng nhìn sẽ sang hơn */
             cursor: pointer;
             color: #aaa;
-            transition: 0.2s;
+            transition: 0.3s;
+            line-height: 1;
+            /* Quan trọng: giúp nút không bị chiếm diện tích thừa */
+            padding: 5px 10px;
+            /* Tạo vùng chạm lớn hơn cho người dùng */
         }
 
         .close-btn:hover {
-            color: #333;
+            color: #d4af37;
+            /* Đổi sang màu vàng chủ đạo của Knotty khi di chuột */
+            transform: scale(1.1);
         }
 
         .cart-item {
@@ -874,9 +949,6 @@
         }
 
         @media (max-width: 768px) {
-            .nav-container {
-                padding: 15px 20px;
-            }
 
             .filter-group {
                 flex-direction: column;
@@ -1003,6 +1075,54 @@
             padding: 30px 20px;
             margin-top: 40px;
         }
+
+        .search-btn svg,
+        #cart-menu-btn svg,
+        #auth-menu-btn svg {
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        /* --- SỬA LỖI BỊ MÉO BIỂU TƯỢNG TRÊN ĐIỆN THOẠI --- */
+        @media (max-width: 1010px) {
+
+            /* 1. Ngăn chặn Flexbox tự động bóp méo các nút khi thiếu không gian */
+            .search-btn,
+            #cart-menu-btn,
+            #auth-menu-btn,
+            .menu-toggle-btn {
+                flex-shrink: 0 !important;
+            }
+        }
+
+        /* 2. Tối ưu riêng cho các điện thoại có màn hình hẹp (dưới 400px) để chống tràn lề */
+        @media (max-width: 400px) {
+
+            nav,
+            .nav-container {
+                padding: 12px 10px !important;
+                /* Giảm lề 2 bên của thanh điều hướng */
+            }
+
+            .toolbar-right {
+                gap: 8px !important;
+                /* Giảm khoảng cách giữa các biểu tượng */
+            }
+
+            .search-btn,
+            #cart-menu-btn,
+            #auth-menu-btn {
+                width: 36px !important;
+                /* Thu nhỏ kích thước nút một chút */
+                height: 36px !important;
+            }
+
+            .logo img {
+                height: 36px !important;
+                /* Thu nhỏ logo tương xứng */
+            }
+        }
     </style>
 </head>
 
@@ -1014,10 +1134,25 @@
             <div class="toolbar-right">
                 <div class="search-container">
                     <input type="text" id="main-search-input" placeholder="Tìm quà tặng...">
-                    <button class="search-btn" id="main-search-btn">🔍</button>
+                    <button class="search-btn" id="main-search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </button>
                 </div>
-                <a id="cart-menu-btn">🛒 <span class="cart-text">Giỏ hàng</span><span id="cart-count"
-                        style="display: none;">0</span></a>
+                <a id="cart-menu-btn">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+
+                    <span class="cart-text">Giỏ hàng</span>
+                    <span id="cart-count">0</span>
+                </a>
                 <div style="position: relative; display: flex; align-items: center;">
                     <a id="auth-menu-btn" onclick="toggleAuth()"
                         style="display: flex; align-items: center; cursor: pointer;">
@@ -1040,7 +1175,7 @@
     </header>
 
     <div class="shop-banner">
-        <h1>Quà Tặng Nổi Bật</h1>
+        <h1>Danh Sách Quà Tặng</h1>
         <p>Tìm kiếm giải pháp quà tặng tinh tế được phân loại theo nhu cầu</p>
     </div>
 
@@ -1061,7 +1196,6 @@
                 <button class="filter-btn" onclick="filterProducts('banbe_dongnghiep', this)">Bạn bè, Đồng
                     nghiệp</button>
                 <button class="filter-btn" onclick="filterProducts('cuoi_tangia', this)">Quà Cưới, Tân gia</button>
-                <button class="filter-btn" onclick="filterProducts('khac_canhan', this)">Khác</button>
             </div>
         </div>
         <div class="filter-group">
@@ -1083,7 +1217,6 @@
             <div class="group-buttons">
                 <button class="filter-btn" onclick="filterProducts('canhanhoa', this)">Đặt quà cá nhân hóa</button>
                 <button class="filter-btn" onclick="filterProducts('soluonglon', this)">Đặt số lượng lớn</button>
-                <button class="filter-btn" onclick="filterProducts('khac_thietke', this)">Khác</button>
             </div>
         </div>
         <div class="filter-group">
@@ -1252,7 +1385,7 @@
             <span class="close-btn" onclick="closeAuthModal()">&times;</span>
 
             <div id="login-form-box">
-                <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Đăng Nhập Thành Viên</h2>
+                <h2 style="margin-bottom: 20px; color: #d4af37; text-align:center;">Đăng Nhập</h2>
                 <form onsubmit="handleLoginSubmit(event)">
                     <div class="form-group">
                         <label>Số điện thoại</label>
@@ -1430,7 +1563,7 @@
          */
         async function loadProductsFromSheet() {
             const grid = document.getElementById('productGrid');
-            if (grid) grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding: 40px 0;'>Đang tải danh sách quà tặng từ hệ thống...</p>";
+            if (grid) grid.innerHTML = "<p style='grid-column: 1/-1; text-align:center; padding: 40px 0; color: #999;'>Đang tải danh sách quà tặng từ hệ thống...</p>";
 
             try {
                 const response = await fetch(GOOGLE_SCRIPT_URL + "?action=getProducts&clientId=" + getClientId());
