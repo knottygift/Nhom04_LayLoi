@@ -113,7 +113,7 @@
         }
 
         .logo img {
-            height: 50px;
+            height: 65px;
             width: auto;
             object-fit: contain;
         }
@@ -340,7 +340,7 @@
             border: 1px solid #f5c6cb;
         }
 
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
             #auth-menu-btn {
                 padding: 0;
                 width: 40px !important;
@@ -389,11 +389,12 @@
             transition: 0.3s;
         }
 
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
 
             nav,
             .nav-container {
                 padding: 15px 20px !important;
+                gap: 0px;
             }
 
             .toolbar-right {
@@ -948,7 +949,7 @@
         }
 
         /* --- CẤU HÌNH GIAO DIỆN TRÊN ĐIỆN THOẠI --- */
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
             nav {
                 padding: 15px 20px;
             }
@@ -1048,7 +1049,7 @@
             display: none;
         }
 
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
             .mobile-menu-header {
                 display: flex !important;
                 justify-content: space-between;
@@ -1137,7 +1138,7 @@
             flex: 1;
         }
 
-        @media (min-width: 1010px) {
+        @media (min-width: 1060px) {
             .dropdown-section {
                 flex: 1;
                 min-width: 220px;
@@ -1211,7 +1212,7 @@
             transform: rotate(180deg);
         }
 
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
             .dropdown-menu {
                 position: static;
                 transform: none;
@@ -1538,7 +1539,7 @@
             /* Ép các nút giữ nguyên hình dáng, không bị móp méo khi đưa lên mobile */
         }
 
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
             #modal-review-filters {
                 /* Bắt buộc căn trái trên Mobile để không bị lấp nút đầu tiên */
                 justify-content: flex-start;
@@ -1557,7 +1558,7 @@
         }
 
         /* --- SỬA LỖI BỊ MÉO BIỂU TƯỢNG TRÊN ĐIỆN THOẠI --- */
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
 
             /* 1. Ngăn chặn Flexbox tự động bóp méo các nút khi thiếu không gian */
             .search-btn,
@@ -1576,6 +1577,7 @@
             nav,
             .nav-container {
                 padding: 12px 10px !important;
+                gap: 0px;
             }
 
             .toolbar-right {
@@ -1586,21 +1588,21 @@
             #cart-menu-btn,
             #auth-menu-btn,
             .menu-toggle-btn {
-                width: 36px !important;
-                height: 36px !important;
-                min-width: 36px !important;
-                min-height: 36px !important;
+                width: 40px !important;
+                height: 40px !important;
+                min-width: 40px !important;
+                min-height: 40px !important;
             }
 
             .logo img {
-                height: 36px !important;
+                height: 40px !important;
             }
         }
 
         /* --- ĐỒNG BỘ KHOẢNG CÁCH & KÍCH THƯỚC CÁC NÚT THANH ĐIỀU HƯỚNG --- */
 
         /* 1. Chuẩn hóa chiều cao và padding trên Máy tính (Desktop) */
-        @media (min-width: 1011px) {
+        @media (min-width: 1060px) {
             .search-container {
                 padding: 6px 15px !important;
                 height: 42px !important;
@@ -1616,7 +1618,7 @@
         }
 
         /* 2. Căn giữa hoàn hảo trên Điện thoại (Mobile) */
-        @media (max-width: 1010px) {
+        @media (max-width: 1060px) {
 
             /* Ép thẻ div bọc nút đăng nhập thành 40x40 tuyệt đối, triệt tiêu khoảng trắng thừa */
             .toolbar-right>div[style*="position: relative"] {
@@ -1742,7 +1744,7 @@
                     <span class="cart-text">Giỏ hàng</span>
                     <span id="cart-count">0</span>
                 </a>
-                <div style="position: relative; display: flex; align-items: center; flex-shrink: 0;">
+                <div style="position: relative; display: flex; align-items: center;">
                     <a id="auth-menu-btn" onclick="toggleAuth()"
                         style="display: flex; align-items: center; cursor: pointer;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -2212,7 +2214,7 @@
         const searchInput = document.getElementById('main-search-input');
 
         searchBtn.addEventListener('click', function (e) {
-            if (window.innerWidth <= 1010 && !searchContainer.classList.contains('active')) {
+            if (window.innerWidth <= 1060 && !searchContainer.classList.contains('active')) {
                 e.preventDefault();
                 searchContainer.classList.add('active');
                 const navWrapper = searchContainer.closest('nav') || searchContainer.closest('.nav-container');
@@ -2224,7 +2226,7 @@
         });
 
         document.addEventListener('click', function (e) {
-            if (window.innerWidth <= 1010 && searchContainer.classList.contains('active')) {
+            if (window.innerWidth <= 1060 && searchContainer.classList.contains('active')) {
                 if (!searchContainer.contains(e.target)) {
                     searchContainer.classList.remove('active');
                     const navWrapper = searchContainer.closest('nav') || searchContainer.closest('.nav-container');
@@ -2246,7 +2248,7 @@
         const desktopMenuContainer = document.getElementById('desktopMenuContainer');
 
         function adjustMenuStructure() {
-            if (window.innerWidth > 1010) {
+            if (window.innerWidth > 1060) {
                 if (desktopMenuContainer && !desktopMenuContainer.contains(navLinks)) {
                     desktopMenuContainer.appendChild(navLinks);
                     document.body.classList.remove('menu-open');
@@ -2265,7 +2267,7 @@
         window.addEventListener('resize', adjustMenuStructure);
 
         function toggleMenu() {
-            if (window.innerWidth <= 1010) {
+            if (window.innerWidth <= 1060) {
                 const isActive = navLinks.classList.contains('active');
                 if (isActive) {
                     closeMenu();
@@ -2279,7 +2281,7 @@
         }
 
         function closeMenu() {
-            if (window.innerWidth <= 1010) {
+            if (window.innerWidth <= 1060) {
                 navLinks.classList.remove('active');
                 if (menuOverlay) menuOverlay.classList.remove('active');
                 document.body.classList.remove('menu-open');
