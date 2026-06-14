@@ -88,7 +88,7 @@
         }
 
         .logo img {
-            height: 45px;
+            height: 50px;
             width: auto;
             object-fit: contain;
         }
@@ -463,18 +463,22 @@
                 pointer-events: none !important;
             }
 
-            /* 4. Trạng thái bình thường của thanh tìm kiếm */
+            /* 4. Trạng thái bình thường của thanh tìm kiếm (Khi đang ĐÓNG) */
             .search-container {
                 display: flex !important;
-                align-items: center;
+                align-items: center !important;
+                justify-content: center !important;
+                /* Cạnh giữa nút hoàn hảo */
                 width: 40px !important;
+                height: 40px !important;
+                /* Ép cố định chiều cao bằng chiều rộng thành hình vuông */
                 padding: 0 !important;
                 background: transparent !important;
-                border: 1px solid transparent !important;
+                border: none !important;
+                /* Bỏ border khi đóng để không lệch kích thước */
                 border-radius: 50% !important;
                 overflow: hidden !important;
                 position: relative !important;
-                /* Ghi đè thiết lập cũ */
                 top: auto !important;
                 left: auto !important;
                 right: auto !important;
@@ -485,31 +489,60 @@
             .search-container.active {
                 width: 100% !important;
                 max-width: 100% !important;
+                height: 40px !important;
+                /* Giữ nguyên chiều cao 40px để chuyển cảnh mượt mà không bị giật dòng */
                 background: #fff !important;
-                padding: 6px 15px !important;
+                padding: 0 0 0 15px !important;
+                /* Chỉ padding bên trái, nhường góc phải cho nút bấm */
                 border: 1px solid #d4af37 !important;
-                border-radius: 25px !important;
+                border-radius: 20px !important;
+                /* Biến thành hình viên thuốc sang trọng */
                 box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15) !important;
             }
 
             /* 6. Xử lý Input text bên trong */
             .search-container input {
                 width: 0 !important;
+                height: 100% !important;
                 padding: 0 !important;
+                margin: 0 !important;
                 opacity: 0 !important;
-                font-size: 16px !important;
+                font-size: 15px !important;
+                border: none !important;
+                min-width: 0 !important;
+                /* QUAN TRỌNG: Triệt tiêu min-width mặc định của trình duyệt mobile */
             }
 
             .search-container.active input {
+                flex: 1 !important;
+                /* Tự động chiếm trọn không gian trống */
                 width: 100% !important;
-                padding: 6px 10px !important;
+                padding: 0 !important;
                 opacity: 1 !important;
                 color: #333 !important;
+            }
+
+            /* Đồng bộ lại cấu hình chuẩn cho nút tìm kiếm trên mobile */
+            .search-btn {
+                background: #f4f4f4;
+                width: 40px !important;
+                height: 40px !important;
+                border-radius: 50% !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                transition: 0.3s !important;
+                flex-shrink: 0 !important;
+                border: none !important;
+                margin: 0 !important;
             }
 
             .search-container.active .search-btn {
                 background: transparent !important;
                 color: #d4af37 !important;
+                width: 38px !important;
+                /* Thu nhỏ nhẹ 2px để nằm vừa vặn bên trong viền border 1px của hộp chứa */
+                height: 38px !important;
             }
 
             #cart-menu-btn {
@@ -1079,13 +1112,13 @@
         .search-btn svg,
         #cart-menu-btn svg,
         #auth-menu-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 24px;
+            height: 24px;
             flex-shrink: 0;
         }
 
         /* --- SỬA LỖI BỊ MÉO BIỂU TƯỢNG TRÊN ĐIỆN THOẠI --- */
-        @media (max-width: 1010px) {
+        @media (max-width: 768px) {
 
             /* 1. Ngăn chặn Flexbox tự động bóp méo các nút khi thiếu không gian */
             .search-btn,
@@ -1093,34 +1126,90 @@
             #auth-menu-btn,
             .menu-toggle-btn {
                 flex-shrink: 0 !important;
+                min-width: 40px !important;
+                min-height: 40px !important;
             }
         }
 
-        /* 2. Tối ưu riêng cho các điện thoại có màn hình hẹp (dưới 400px) để chống tràn lề */
+        /* 2. Tối ưu riêng cho các điện thoại có màn hình hẹp (dưới 400px) */
         @media (max-width: 400px) {
 
             nav,
             .nav-container {
                 padding: 12px 10px !important;
-                /* Giảm lề 2 bên của thanh điều hướng */
             }
 
             .toolbar-right {
                 gap: 8px !important;
-                /* Giảm khoảng cách giữa các biểu tượng */
             }
 
             .search-btn,
             #cart-menu-btn,
-            #auth-menu-btn {
+            #auth-menu-btn,
+            .menu-toggle-btn {
                 width: 36px !important;
-                /* Thu nhỏ kích thước nút một chút */
                 height: 36px !important;
+                min-width: 36px !important;
+                min-height: 36px !important;
             }
 
             .logo img {
                 height: 36px !important;
-                /* Thu nhỏ logo tương xứng */
+            }
+        }
+
+        /* --- ĐỒNG BỘ KHOẢNG CÁCH & KÍCH THƯỚC CÁC NÚT THANH ĐIỀU HƯỚNG --- */
+
+        /* 1. Chuẩn hóa chiều cao và padding trên Máy tính (Desktop) */
+        @media (min-width: 1011px) {
+            .search-container {
+                padding: 6px 15px !important;
+                height: 42px !important;
+                box-sizing: border-box !important;
+            }
+
+            #cart-menu-btn,
+            #auth-menu-btn {
+                padding: 6px 15px !important;
+                height: 42px !important;
+                box-sizing: border-box !important;
+            }
+        }
+
+        /* 2. Căn giữa hoàn hảo trên Điện thoại (Mobile) */
+        @media (max-width: 1010px) {
+
+            /* Ép thẻ div bọc nút đăng nhập thành 40x40 tuyệt đối, triệt tiêu khoảng trắng thừa */
+            .toolbar-right>div[style*="position: relative"] {
+                width: 40px !important;
+                height: 40px !important;
+                justify-content: center !important;
+            }
+
+            /* Xóa mọi khoảng đệm thừa, ép các nút thành hình vuông để bo tròn 100% */
+            #cart-menu-btn,
+            #auth-menu-btn,
+            .search-btn,
+            .menu-toggle-btn {
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 40px !important;
+                height: 40px !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+            }
+
+            /* Sửa phù hiệu số lượng đỏ bằng transform để không lấn sang không gian của gap */
+            #cart-count {
+                right: 0 !important;
+                top: 0 !important;
+                transform: translate(30%, -20%) !important;
+            }
+
+            /* Tinh chỉnh lại tổng thể khoảng cách giữa các nút */
+            .toolbar-right {
+                gap: 12px !important;
             }
         }
     </style>
@@ -1153,7 +1242,7 @@
                     <span class="cart-text">Giỏ hàng</span>
                     <span id="cart-count">0</span>
                 </a>
-                <div style="position: relative; display: flex; align-items: center;">
+                <div style="position: relative; display: flex; align-items: center; flex-shrink: 0;">
                     <a id="auth-menu-btn" onclick="toggleAuth()"
                         style="display: flex; align-items: center; cursor: pointer;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
