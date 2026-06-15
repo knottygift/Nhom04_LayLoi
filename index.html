@@ -1602,7 +1602,7 @@
         /* --- ĐỒNG BỘ KHOẢNG CÁCH & KÍCH THƯỚC CÁC NÚT THANH ĐIỀU HƯỚNG --- */
 
         /* 1. Chuẩn hóa chiều cao và padding trên Máy tính (Desktop) */
-        @media (min-width: 1060px) {
+        @media (min-width: 1061px) {
             .search-container {
                 padding: 6px 15px !important;
                 height: 42px !important;
@@ -1621,11 +1621,11 @@
         @media (max-width: 1060px) {
 
             /* Ép thẻ div bọc nút đăng nhập thành 40x40 tuyệt đối, triệt tiêu khoảng trắng thừa */
-            .toolbar-right>div[style*="position: relative"] {
+            /* .toolbar-right>div[style*="position: relative"] {
                 width: 40px !important;
                 height: 40px !important;
                 justify-content: center !important;
-            }
+            } */
 
             /* Xóa mọi khoảng đệm thừa, ép các nút thành hình vuông để bo tròn 100% */
             #cart-menu-btn,
@@ -2490,18 +2490,39 @@
                 authLabel.innerText = "Đăng nhập";
             }
         }
-        window.addEventListener('load', () => {
-            checkLoginStatus(); // Cập nhật tên hiển thị ở nút tài khoản
+        window.addEventListener('load', async () => {
+            checkLoginStatus();
 
-            // Đảm bảo đọc lại giỏ hàng từ Local Storage một lần nữa cho chắc chắn
+            // Đọc tạm giỏ hàng từ máy để hiển thị ngay lập tức tránh bị giật giao diện
             let savedCart = localStorage.getItem('knotty_cart');
             if (savedCart) {
                 cart = JSON.parse(savedCart);
             }
-
-            // Gọi hàm cập nhật UI để hiển thị ngay số lượng và danh sách sản phẩm trong giỏ
             if (typeof updateCartUI === "function") {
                 updateCartUI();
+            }
+
+            // ĐỒNG BỘ GIỎ HÀNG TỪ ĐÁM MÂY (CLOUD) XUỐNG THIẾT BỊ
+            if (currentUser) {
+                try {
+                    const res = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                        body: JSON.stringify({ action: 'getCart', phone: currentUser.phone })
+                    });
+                    const data = await res.json();
+
+                    if (data.result === 'success') {
+                        // Ghi đè giỏ hàng ở máy bằng giỏ hàng mới nhất từ máy chủ
+                        cart = data.cart;
+                        localStorage.setItem('knotty_cart', JSON.stringify(cart));
+                        if (typeof updateCartUI === "function") {
+                            updateCartUI();
+                        }
+                    }
+                } catch (err) {
+                    console.log('Lỗi đồng bộ giỏ hàng khi mở trang:', err);
+                }
             }
         });
 
