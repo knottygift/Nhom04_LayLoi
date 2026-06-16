@@ -1602,6 +1602,7 @@
 
         const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyDf7TIxPYJOb2nscOwMzeOqT5G7ssBaIcqjFBRya-5uV0Inm5yAx_ZUpU-MMTDvoX/exec";
         let isManualVoucher = false;
+        let isCheckoutPending = false;
 
         /**
          * Escape HTML to prevent XSS
@@ -2089,6 +2090,7 @@
         function closeAuthModal() {
             document.getElementById('auth-modal').style.display = "none";
             document.body.classList.remove('no-scroll');
+            isCheckoutPending = false;
         }
 
         // Đóng dropdown tài khoản khi click ra ngoài
@@ -2129,17 +2131,32 @@
                     currentUser = data.user;
                     localStorage.setItem('knotty_user', JSON.stringify(currentUser));
 
-                    // SỬA THEO YÊU CẦU: Xóa toàn bộ sản phẩm trong giỏ hàng local, gọi sản phẩm từ Sheet
-                    cart = [];
-                    if (currentUser.cart && Array.isArray(currentUser.cart)) {
-                        cart = currentUser.cart;
-                    }
-                    localStorage.setItem('knotty_cart', JSON.stringify(cart));
-                    updateCartUI();
+                    if (isCheckoutPending) {
+                        // 1. ĐANG MUA HÀNG VÃNG LAI: Tạm "cất" giỏ hàng Cloud, giữ nguyên giỏ hiện tại
+                        window.preservedCloudCart = (currentUser.cart && Array.isArray(currentUser.cart)) ? currentUser.cart : [];
 
-                    checkLoginStatus();
-                    closeAuthModal();
-                    Swal.fire({ title: 'Thành công!', text: 'Chào mừng bạn trở lại.', icon: 'success', timer: 1500, showConfirmButton: false });
+                        updateCartUI();
+                        checkLoginStatus();
+                        isCheckoutPending = false;
+                        document.getElementById('auth-modal').style.display = "none";
+
+                        // Điền thông tin vào form
+                        document.getElementById('order-name').value = currentUser.name || "";
+                        document.getElementById('order-phone').value = currentUser.phone || "";
+                        document.getElementById('order-email').value = currentUser.email || "";
+
+                        Swal.fire({ title: 'Đăng nhập thành công!', text: 'Vui lòng hoàn tất thông tin nhận hàng.', icon: 'success', timer: 2000, showConfirmButton: false })
+                            .then(() => { openOrderModal(); });
+                    } else {
+                        // 2. ĐĂNG NHẬP BÌNH THƯỜNG: Lấy giỏ hàng Cloud đè lên giỏ hiện tại
+                        cart = (currentUser.cart && Array.isArray(currentUser.cart)) ? currentUser.cart : [];
+                        localStorage.setItem('knotty_cart', JSON.stringify(cart));
+                        updateCartUI();
+                        checkLoginStatus();
+
+                        closeAuthModal();
+                        Swal.fire({ title: 'Thành công!', text: 'Chào mừng bạn trở lại.', icon: 'success', timer: 1500, showConfirmButton: false });
+                    }
                 } else {
                     Swal.fire('Thất bại', data.message, 'error');
                 }
@@ -2167,10 +2184,27 @@
                     if (data.result === 'success') {
                         currentUser = data.user;
                         localStorage.setItem('knotty_user', JSON.stringify(currentUser));
-                        syncCartToCloud();
-                        checkLoginStatus();
-                        closeAuthModal();
-                        Swal.fire({ title: 'Đăng ký thành công!', icon: 'success', timer: 1500, showConfirmButton: false });
+
+                        if (isCheckoutPending) {
+                            // ĐĂNG KÝ ĐỂ MUA HÀNG: Cất giỏ mây (rỗng) đi, giữ nguyên giỏ vãng lai
+                            window.preservedCloudCart = [];
+                            updateCartUI();
+                            checkLoginStatus();
+                            isCheckoutPending = false;
+                            document.getElementById('auth-modal').style.display = "none";
+
+                            Swal.fire({ title: 'Đăng ký thành công!', text: 'Vui lòng điền thông tin để đặt hàng.', icon: 'success', timer: 2000, showConfirmButton: false })
+                                .then(() => { openOrderModal(); });
+                        } else {
+                            // ĐĂNG KÝ BÌNH THƯỜNG: Làm trống toàn bộ
+                            cart = [];
+                            localStorage.setItem('knotty_cart', JSON.stringify(cart));
+                            updateCartUI();
+                            checkLoginStatus();
+
+                            closeAuthModal();
+                            Swal.fire({ title: 'Đăng ký thành công!', icon: 'success', timer: 1500, showConfirmButton: false });
+                        }
                     } else {
                         Swal.fire('Thất bại', data.message, 'error');
                     }
@@ -2179,14 +2213,42 @@
         }
 
         function logout() {
-            currentUser = null;
-            localStorage.removeItem('knotty_user');
-            cart = []; // Xóa giỏ hàng khi logout
-            localStorage.removeItem('knotty_cart');
-            updateCartUI();
-            checkLoginStatus();
-            document.getElementById('auth-dropdown').classList.remove('active');
-            Toast.fire({ icon: "info", title: "Đã đăng xuất" });
+            Swal.fire({
+                title: "Đăng xuất",
+                text: "Bạn có chắc chắn muốn đăng xuất tài khoản?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#d4af37",
+                cancelButtonColor: "#95a5a6",
+                confirmButtonText: "Đăng xuất",
+                cancelButtonText: "Hủy"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // 1. Xóa sạch thông tin phiên đăng nhập của người dùng
+                    currentUser = null;
+                    sessionToken = null;
+                    sessionTimestamp = null;
+                    isCheckoutPending = false;
+                    localStorage.removeItem('knotty_user');
+
+                    // 2. XÓA SẠCH TOÀN BỘ GIỎ HÀNG (Sửa lỗi giỏ hàng không clear)
+                    cart = [];
+                    localStorage.removeItem('knotty_cart');
+
+                    // 3. Cập nhật lại toàn bộ giao diện (Menu tài khoản, số lượng giỏ hàng)
+                    checkLoginStatus();
+                    updateCartUI();
+
+                    // 4. Thông báo cho khách hàng
+                    Swal.fire({
+                        title: "Đã đăng xuất!",
+                        text: "Giỏ hàng của bạn đã được làm sạch thành công.",
+                        icon: "success",
+                        timer: 1500,
+                        showConfirmButton: false
+                    });
+                }
+            });
         }
 
         // ===================================
@@ -2460,6 +2522,7 @@
         let syncTimeout;
         function syncCartToCloud() {
             if (!currentUser) return; // Khách vãng lai thì chỉ lưu Local
+            if (window.preservedCloudCart) return;
             clearTimeout(syncTimeout);
             syncTimeout = setTimeout(() => {
                 fetch(GOOGLE_SCRIPT_URL, {
@@ -2626,9 +2689,9 @@
                 return;
             }
 
-            // 2. THÊM MỚI: Chặn khách vãng lai và yêu cầu đăng nhập
+            // 2. Chặn khách vãng lai và yêu cầu đăng nhập
             if (!currentUser) {
-                closeCartModal(); // Đóng popup giỏ hàng để tránh rối mắt
+                closeCartModal();
                 Swal.fire({
                     title: "Yêu cầu đăng nhập",
                     text: "Vui lòng đăng nhập hoặc đăng ký tài khoản để tiếp tục đặt hàng!",
@@ -2640,12 +2703,12 @@
                     cancelButtonText: "Để sau"
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        // Gọi trực tiếp code mở Modal Auth của bạn
+                        isCheckoutPending = true; // <-- THÊM DÒNG NÀY: Ghi nhớ khách đang thanh toán dở
                         document.getElementById('auth-modal').style.display = "block";
                         document.body.classList.add('no-scroll');
                     }
                 });
-                return; // Quan trọng: Kết thúc hàm tại đây, không cho mở Modal thông tin nhận hàng
+                return;
             }
 
             // 3. Nếu đã đăng nhập, tự động điền thông tin và mở form thanh toán
@@ -2835,9 +2898,21 @@
                     }
                 });
 
-                cart = [];
-                localStorage.removeItem('knotty_cart');
+                // XỬ LÝ DỌN DẸP GIỎ HÀNG SAU KHI MUA
+                if (window.preservedCloudCart) {
+                    // Trường hợp 1: Mua vãng lai xong -> Khôi phục lại giỏ hàng Cloud cũ cho khách
+                    cart = window.preservedCloudCart;
+                    window.preservedCloudCart = null; // Reset biến
+                } else {
+                    // Trường hợp 2: Khách đã đăng nhập từ đầu -> Mua xong thì xóa sạch
+                    cart = [];
+                }
+
+                localStorage.setItem('knotty_cart', JSON.stringify(cart));
                 updateCartUI();
+                if (currentUser) {
+                    syncCartToCloud(); // Lúc này biến đã reset, giỏ hàng chuẩn sẽ được đồng bộ lên Cloud
+                }
                 event.target.reset();
                 closeOrderModal();
 
