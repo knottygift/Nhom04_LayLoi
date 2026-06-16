@@ -2316,7 +2316,8 @@
 
                     let html = '';
                     loadedOrders.forEach((order, index) => {
-                        let dateStr = new Date(order.date).toLocaleDateString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+                        let d = new Date(order.date);
+                        let dateStr = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
 
                         // Xử lý Status & Nút bấm
                         let statusClass = '';
@@ -2403,7 +2404,8 @@
             const order = loadedOrders[index];
             if (!order) return;
 
-            let dateStr = new Date(order.date).toLocaleString('vi-VN');
+            let d = new Date(order.date);
+            let dateStr = `${d.getDate().toString().padStart(2, '0')}/${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getFullYear()} ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
 
             // Xử lý chuỗi items (Sản phẩm x Số lượng)
             let itemsHtml = '<ul>';
